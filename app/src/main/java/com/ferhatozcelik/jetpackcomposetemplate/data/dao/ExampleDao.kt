@@ -1,6 +1,11 @@
 package com.ferhatozcelik.jetpackcomposetemplate.data.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
 import com.ferhatozcelik.jetpackcomposetemplate.data.entity.ExampleEntity
 
 @Dao
@@ -10,7 +15,7 @@ interface ExampleDao {
     fun getExampleData(): List<ExampleEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(search: ExampleEntity?)
+    suspend fun insert(search: ExampleEntity)
 
     @Update
     suspend fun update(search: ExampleEntity)
