@@ -13,9 +13,9 @@ import com.ferhatozcelik.jetpackcomposetemplate.ui.home.MainScreen
 fun NavGraph(navController: NavHostController) {
 
     NavHost(
-        navController = navController, startDestination = Screen.Main.route
+        navController = navController,
+        startDestination = Screen.Main.route
     ) {
-
         composable(Screen.Main.route) {
             MainScreen(navController = navController)
         }

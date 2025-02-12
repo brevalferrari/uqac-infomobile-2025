@@ -35,7 +35,7 @@ fun Context.goURL(url: String) {
         val myIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(myIntent)
     } catch (e: ActivityNotFoundException) {
-        this.toast("No application can handle this request. Please install a webbrowser")
+        this.toast("No application can handle this request. Please install a web browser")
         e.printStackTrace()
     }
 }

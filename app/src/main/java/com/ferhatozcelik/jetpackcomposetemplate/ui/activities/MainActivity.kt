@@ -1,4 +1,4 @@
-package com.ferhatozcelik.jetpackcomposetemplate.ui.activitys
+package com.ferhatozcelik.jetpackcomposetemplate.ui.activities
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
