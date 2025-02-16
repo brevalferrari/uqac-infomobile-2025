@@ -1,10 +1,16 @@
 package com.ferhatozcelik.jetpackcomposetemplate.ui.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,9 +28,11 @@ import com.ferhatozcelik.jetpackcomposetemplate.navigation.Screen
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Black
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Grey
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen(
     navController: NavController,
+    viewModel: HomeViewModel
 ) {
     val robotoSerifFontFamily = FontFamily(
         Font(com.ferhatozcelik.jetpackcomposetemplate.R.font.roboto),
@@ -64,6 +72,12 @@ fun MainScreen(
             fontSize = 54.sp,
             color = Grey
         )
+        LazyColumn {
+            items(viewModel.routines.value) { routine ->
+                RoutineCard(routine)
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
         Button(onClick = {
             navController.navigate(Screen.Create.route)
         }) {

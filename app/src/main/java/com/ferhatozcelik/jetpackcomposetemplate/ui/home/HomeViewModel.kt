@@ -7,7 +7,6 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
-import com.ferhatozcelik.jetpackcomposetemplate.data.repository.ExampleRepository
 import com.ferhatozcelik.jetpackcomposetemplate.util.deleteRoutineFromList
 import com.ferhatozcelik.jetpackcomposetemplate.util.getRoutines
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +14,7 @@ import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val exampleRepository: ExampleRepository) :
+class HomeViewModel @Inject constructor() :
     ViewModel() {
     private val TAG = HomeViewModel::class.java.simpleName
 
