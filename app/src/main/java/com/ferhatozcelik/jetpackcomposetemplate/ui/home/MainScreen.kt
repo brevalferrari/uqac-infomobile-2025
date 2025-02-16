@@ -1,4 +1,4 @@
-package com.ferhatozcelik.jetpackcomposetemplate.ui.detail
+package com.ferhatozcelik.jetpackcomposetemplate.ui.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.ferhatozcelik.jetpackcomposetemplate.ui.detail.DetailViewModel
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Black
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Grey
-
 
 @Composable
 fun MainScreen(
