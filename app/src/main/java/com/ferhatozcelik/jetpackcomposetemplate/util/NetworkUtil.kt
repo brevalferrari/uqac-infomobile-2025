@@ -3,9 +3,12 @@ package com.ferhatozcelik.jetpackcomposetemplate.util
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Build
+import androidx.annotation.RequiresApi
 
 class NetworkUtil {
     companion object {
+        @RequiresApi(Build.VERSION_CODES.M)
         fun hasInternetConnection(context: Context): Boolean {
             val connectivityManager =
                 context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
