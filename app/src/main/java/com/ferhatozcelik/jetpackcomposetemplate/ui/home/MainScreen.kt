@@ -4,14 +4,17 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,12 +24,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.ferhatozcelik.jetpackcomposetemplate.navigation.Screen
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Black
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Grey
+import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.White
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -51,40 +56,59 @@ fun MainScreen(
         contentScale = ContentScale.Crop
     )
 
-    Column(
+
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(10.dp),
-        verticalArrangement = Arrangement.Top, // Aligner les éléments en haut
-        horizontalAlignment = Alignment.Start // Aligner les éléments à gauche
+            .padding(10.dp)
     ) {
-        Text(
-            text = "Routine",
-            fontFamily = robotoSerifFontFamily,
-            fontStyle = FontStyle.Italic,
-            fontSize = 54.sp,
-            color = Black
-        )
-        Text(
-            text = "(not poutine)",
-            fontFamily = robotoSerifFontFamily,
-            fontStyle = FontStyle.Italic,
-            fontSize = 54.sp,
-            color = Grey
-        )
-        LazyColumn {
-            items(viewModel.routines.value) { routine ->
-                RoutineCard(routine)
-                Spacer(modifier = Modifier.height(8.dp))
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp),
+            verticalArrangement = Arrangement.Top, // Aligner les éléments en haut
+            horizontalAlignment = Alignment.Start // Aligner les éléments à gauche
+        ) {
+            Text(
+                text = "Routine",
+                fontFamily = robotoSerifFontFamily,
+                fontStyle = FontStyle.Italic,
+                fontSize = 54.sp,
+                color = Black,
+            )
+            Text(
+                text = "(not poutine)",
+                fontFamily = robotoSerifFontFamily,
+                fontStyle = FontStyle.Italic,
+                fontSize = 54.sp,
+                color = Grey,
+            )
+            LazyColumn {
+                items(viewModel.routines.value) { routine ->
+                    RoutineCard(routine)
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
             }
         }
-        Button(onClick = {
-            navController.navigate(Screen.Create.route)
-        }) {
+
+        // Bouton en bas à droite
+        Button(
+            onClick = {
+                navController.navigate(Screen.Create.route)
+            },
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .size(56.dp), // Taille du bouton
+            colors = ButtonDefaults.buttonColors(containerColor = Black)
+        ) {
             Text(
-                text = "Clique ici"
+                text = "+",
+                color = White, // Couleur du texte
+                fontSize = 25.sp,
+                textAlign = TextAlign.Center
             )
         }
+
     }
 
 }

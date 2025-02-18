@@ -15,6 +15,7 @@ private val routines: MutableList<Routine> = mutableListOf(
         UUID.randomUUID(),
         "Brosser les dents",
         category = Category.Health,
+        description = "Se faire les dents c'est bon pour la santé",
         priority = Priority.High,
         period = Period.ofDays(1),
         startTime = LocalDateTime.parse("2018-12-30T19:34:50.63")
@@ -25,12 +26,7 @@ private val routines: MutableList<Routine> = mutableListOf(
         category = Category.Health,
         priority = Priority.Medium,
         endTime = LocalDateTime.MAX,
-        description = """
-            - PQ
-            - papier cuisson
-            - papier alu
-            - papier A4
-        """.trimIndent()
+        description = """PQ, papier cuisson, papier alu, papier A4""".trimIndent()
     ),
     Routine(
         UUID.randomUUID(),
