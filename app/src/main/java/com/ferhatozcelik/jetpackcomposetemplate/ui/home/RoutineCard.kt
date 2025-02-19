@@ -126,7 +126,7 @@ fun RoutineCard(
 
                 Spacer(modifier = Modifier.weight(0.8f)) // 70% of the total width as space
 
-                // Périodicité de la routine
+                // Périodicité
                 Box(
                     modifier = Modifier
                         .weight(1f)

@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -156,7 +157,7 @@ fun CreateScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(150.dp)
+                            .height(70.dp)
                             .border(1.dp, Grey, RoundedCornerShape(8.dp)),
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = Color.Transparent,
@@ -457,7 +458,8 @@ fun CreateScreen(
             Image(
                 painter = painterResource(id = R.drawable.close),
                 contentDescription = "Back Home",
-                modifier = Modifier.size(40.dp)
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier.size(140.dp)
             )
         }
 
