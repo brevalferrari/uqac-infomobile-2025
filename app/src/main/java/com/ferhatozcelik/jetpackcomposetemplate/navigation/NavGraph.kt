@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.ferhatozcelik.jetpackcomposetemplate.ui.Update.EditScreen
 import com.ferhatozcelik.jetpackcomposetemplate.ui.create.CreateScreen
 import com.ferhatozcelik.jetpackcomposetemplate.ui.home.HomeViewModel
 import com.ferhatozcelik.jetpackcomposetemplate.ui.home.MainScreen
@@ -26,6 +27,10 @@ fun NavGraph(navController: NavHostController) {
         }
         composable(Screen.Create.route) {
             CreateScreen(navController = navController)
+        }
+        composable("edit/{routineId}") { backStackEntry ->
+            val routineId = backStackEntry.arguments?.getString("routineId")
+            EditScreen(navController = navController, routineId = routineId)
         }
     }
 }
