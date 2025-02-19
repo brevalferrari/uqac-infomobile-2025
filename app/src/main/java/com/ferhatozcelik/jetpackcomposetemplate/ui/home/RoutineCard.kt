@@ -1,25 +1,23 @@
 package com.ferhatozcelik.jetpackcomposetemplate.ui.home
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -29,7 +27,9 @@ import androidx.compose.ui.unit.sp
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Black
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Grey
+import com.ferhatozcelik.jetpackcomposetemplate.util.format
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RoutineCard(
     routine: Routine
@@ -51,7 +51,7 @@ fun RoutineCard(
         Column(
             modifier = Modifier
                 .padding(top = 16.dp)
-                /* .verticalScroll(rememberScrollState()) */
+            /* .verticalScroll(rememberScrollState()) */
         ) {
 
             Row(
@@ -142,7 +142,8 @@ fun RoutineCard(
                         )
 
                         Text(
-                            text = "${routine.period}",
+                            text = routine.period?.let { "Tous les " + format(it) }
+                                ?: "Ne se répète pas",
                             fontFamily = robotoSerifFontFamily,
                             fontSize = 16.sp,
                             color = Black,
@@ -171,7 +172,7 @@ fun RoutineCard(
                         )
 
                         Text(
-                            text = "De: ${routine.startTime ?: "Non défini"} à ${routine.endTime ?: "Non défini"}",
+                            text = "De ${format(routine.startTime)} à ${format(routine.endTime)}",
                             fontFamily = robotoSerifFontFamily,
                             fontSize = 16.sp,
                             color = Black,

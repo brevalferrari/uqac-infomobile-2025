@@ -18,22 +18,26 @@ private val routines: MutableList<Routine> = mutableListOf(
         description = "Se faire les dents c'est bon pour la santé",
         priority = Priority.High,
         period = Period.ofDays(1),
-        startTime = LocalDateTime.parse("2018-12-30T19:34:50.63")
+        startTime = LocalDateTime.parse("2018-12-30T19:34:50.63"),
+        endTime = LocalDateTime.parse("2018-12-30T20:00:00.00")
     ),
     Routine(
         UUID.randomUUID(),
         "Faire les courses",
         category = Category.Health,
         priority = Priority.Medium,
-        endTime = LocalDateTime.MAX,
-        description = """PQ, papier cuisson, papier alu, papier A4""".trimIndent()
+        description = """PQ, papier cuisson, papier alu, papier A4""".trimIndent(),
+        startTime = LocalDateTime.now(),
+        endTime = LocalDateTime.now()
     ),
     Routine(
         UUID.randomUUID(),
         "Séance de Méditation",
         description = "pour baisser mon karma",
         priority = Priority.Low,
-        category = Category.Work
+        category = Category.Work,
+        startTime = LocalDateTime.now(),
+        endTime = LocalDateTime.now()
     )
 )
 
