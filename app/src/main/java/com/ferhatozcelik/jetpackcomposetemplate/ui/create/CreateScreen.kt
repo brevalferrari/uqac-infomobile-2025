@@ -1,6 +1,5 @@
 package com.ferhatozcelik.jetpackcomposetemplate.ui.create
 
-import android.widget.DatePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -18,14 +17,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -42,12 +39,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.ferhatozcelik.jetpackcomposetemplate.R
+import com.ferhatozcelik.jetpackcomposetemplate.data.model.Category
+import com.ferhatozcelik.jetpackcomposetemplate.data.model.Priority
 import com.ferhatozcelik.jetpackcomposetemplate.navigation.Screen
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Black
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Grey
-import com.ferhatozcelik.jetpackcomposetemplate.R
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.White
-import java.util.Calendar
 
 @Composable
 fun CreateScreen(
@@ -60,12 +58,10 @@ fun CreateScreen(
         Font(R.font.robotoserif_italic, style = FontStyle.Italic),
     )
 
-    val categoryOptions = listOf("Sports", "Hygiène", "Travail", "Autres")
     val selectedCategory = remember { mutableStateOf<String?>(null) }
 
-    val importanceOptions = listOf("Haute", "Moyenne", "Faible")
-    val selectedImportance = remember { mutableStateOf<String?>(null) }
-    val importanceExpanded = remember { mutableStateOf(false) }
+    val selectedPriority = remember { mutableStateOf<Priority?>(null) }
+    val priorityExpanded = remember { mutableStateOf(false) }
 
     val expanded = remember { mutableStateOf(false) }
     val routineName = remember { mutableStateOf("") }
@@ -219,13 +215,13 @@ fun CreateScreen(
                             onDismissRequest = { expanded.value = false },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            categoryOptions.forEach { category ->
+                            Category.entries.forEach { category ->
                                 DropdownMenuItem(
                                     onClick = {
-                                        selectedCategory.value = category
+                                        selectedCategory.value = category.toString()
                                         expanded.value = false
                                     },
-                                    text = { Text(text = category) }
+                                    text = { Text(text = category.toString()) }
                                 )
                             }
                         }
@@ -346,7 +342,7 @@ fun CreateScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Importance
+                // Priority
                 Column {
                     Text(
                         text = "Importance *",
@@ -369,14 +365,15 @@ fun CreateScreen(
                                 .fillMaxWidth()
                                 .pointerInput(Unit) {
                                     detectTapGestures {
-                                        importanceExpanded.value = !importanceExpanded.value
+                                        priorityExpanded.value = !priorityExpanded.value
                                     }
                                 }
                         ) {
                             Text(
-                                text = selectedImportance.value ?: "Sélectionnez une importance",
+                                text = selectedPriority.value.toString()
+                                    ?: "Sélectionnez une importance",
                                 fontFamily = robotoSerifFontFamily,
-                                color = if (selectedImportance.value == null) Grey else Black,
+                                color = if (selectedPriority.value == null) Grey else Black,
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(8.dp)
@@ -389,17 +386,17 @@ fun CreateScreen(
                         }
 
                         DropdownMenu(
-                            expanded = importanceExpanded.value,
-                            onDismissRequest = { importanceExpanded.value = false },
+                            expanded = priorityExpanded.value,
+                            onDismissRequest = { priorityExpanded.value = false },
                             modifier = Modifier.fillMaxWidth()
                         ) {
-                            importanceOptions.forEach { importance ->
+                            Priority.entries.forEach { priority ->
                                 DropdownMenuItem(
                                     onClick = {
-                                        selectedImportance.value = importance
-                                        importanceExpanded.value = false
+                                        selectedPriority.value = priority
+                                        priorityExpanded.value = false
                                     },
-                                    text = { Text(text = importance) }
+                                    text = { Text(text = priority.toString()) }
                                 )
                             }
                         }
