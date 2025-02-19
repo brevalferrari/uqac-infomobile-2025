@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.ferhatozcelik.jetpackcomposetemplate.ui.create.CreateScreen
+import com.ferhatozcelik.jetpackcomposetemplate.ui.create.CreateScreenState
 import com.ferhatozcelik.jetpackcomposetemplate.ui.home.HomeViewModel
 import com.ferhatozcelik.jetpackcomposetemplate.ui.home.MainScreen
 
@@ -25,7 +26,7 @@ fun NavGraph(navController: NavHostController) {
             )
         }
         composable(Screen.Create.route) {
-            CreateScreen(navController = navController)
+            CreateScreen(navController = navController, state = CreateScreenState())
         }
     }
 }

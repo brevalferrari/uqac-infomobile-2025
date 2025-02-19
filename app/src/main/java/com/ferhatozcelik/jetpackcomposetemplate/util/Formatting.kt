@@ -34,14 +34,15 @@ fun format(period: Period): String {
     return output.toString()
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun format(datetime: LocalDateTime): String {
     val time = datetime.toLocalTime()
 
     val output = StringBuilder()
     output.append("${time.hour}h")
     if (time.minute != 0) output.append(time.minute)
-    if (!(LocalDateTime.now()
-            .minusDays(1) < datetime)
+    if (LocalDateTime.now()
+            .minusDays(1) >= datetime
     ) {
         output.append(" (${datetime.dayOfMonth}/${datetime.month.value}")
         if (datetime.year != LocalDateTime.now().year) {

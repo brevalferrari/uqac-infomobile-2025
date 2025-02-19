@@ -1,5 +1,8 @@
 package com.ferhatozcelik.jetpackcomposetemplate.ui.create
 
+import android.os.Build
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -23,13 +26,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -46,10 +48,13 @@ import com.ferhatozcelik.jetpackcomposetemplate.navigation.Screen
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Black
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Grey
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.White
+import java.time.Period
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CreateScreen(
     viewModel: CreateViewModel = hiltViewModel(),
+    state: CreateScreenState,
     navController: NavController,
 ) {
     val robotoSerifFontFamily = FontFamily(
@@ -57,17 +62,8 @@ fun CreateScreen(
         Font(R.font.robotoserif),
         Font(R.font.robotoserif_italic, style = FontStyle.Italic),
     )
+    val context = LocalContext.current
 
-    val selectedCategory = remember { mutableStateOf<String?>(null) }
-
-    val selectedPriority = remember { mutableStateOf<Priority?>(null) }
-    val priorityExpanded = remember { mutableStateOf(false) }
-
-    val expanded = remember { mutableStateOf(false) }
-    val routineName = remember { mutableStateOf("") }
-    val routineDescription = remember { mutableStateOf("") }
-    val selectedDate = remember { mutableStateOf("Sélectionnez une date") }
-    val showDatePicker = remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -106,8 +102,8 @@ fun CreateScreen(
                         modifier = Modifier.padding(start = 16.dp)
                     )
                     TextField(
-                        value = routineName.value,
-                        onValueChange = { routineName.value = it },
+                        value = viewModel.routineName.value,
+                        onValueChange = { viewModel.setName(it) },
                         placeholder = {
                             Text(
                                 "Un nom de routine random",
@@ -142,8 +138,8 @@ fun CreateScreen(
                         modifier = Modifier.padding(start = 16.dp)
                     )
                     TextField(
-                        value = routineDescription.value,
-                        onValueChange = { routineDescription.value = it },
+                        value = viewModel.routineDescription.value,
+                        onValueChange = { viewModel.setDescription(it) },
                         placeholder = {
                             Text(
                                 "Une description plus ou moins longue",
@@ -191,14 +187,15 @@ fun CreateScreen(
                                 .fillMaxWidth()
                                 .pointerInput(Unit) {
                                     detectTapGestures {
-                                        expanded.value = !expanded.value
+                                        state.expanded.value = !state.expanded.value
                                     }
                                 }
                         ) {
                             Text(
-                                text = selectedCategory.value ?: "Sélectionnez une catégorie",
+                                text = viewModel.selectedCategory.value?.toString()
+                                    ?: "Sélectionnez une catégorie",
                                 fontFamily = robotoSerifFontFamily,
-                                color = if (selectedCategory.value == null) Grey else Black,
+                                color = if (viewModel.selectedCategory.value == null) Grey else Black,
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(8.dp)
@@ -211,15 +208,15 @@ fun CreateScreen(
                         }
 
                         DropdownMenu(
-                            expanded = expanded.value,
-                            onDismissRequest = { expanded.value = false },
+                            expanded = state.expanded.value,
+                            onDismissRequest = { state.expanded.value = false },
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Category.entries.forEach { category ->
                                 DropdownMenuItem(
                                     onClick = {
-                                        selectedCategory.value = category.toString()
-                                        expanded.value = false
+                                        viewModel.setCategory(category)
+                                        state.expanded.value = false
                                     },
                                     text = { Text(text = category.toString()) }
                                 )
@@ -365,15 +362,15 @@ fun CreateScreen(
                                 .fillMaxWidth()
                                 .pointerInput(Unit) {
                                     detectTapGestures {
-                                        priorityExpanded.value = !priorityExpanded.value
+                                        state.priorityExpanded.value = !state.priorityExpanded.value
                                     }
                                 }
                         ) {
                             Text(
-                                text = selectedPriority.value.toString()
+                                text = viewModel.selectedPriority.value?.toString()
                                     ?: "Sélectionnez une importance",
                                 fontFamily = robotoSerifFontFamily,
-                                color = if (selectedPriority.value == null) Grey else Black,
+                                color = if (viewModel.selectedPriority.value == null) Grey else Black,
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(8.dp)
@@ -386,15 +383,15 @@ fun CreateScreen(
                         }
 
                         DropdownMenu(
-                            expanded = priorityExpanded.value,
-                            onDismissRequest = { priorityExpanded.value = false },
+                            expanded = state.priorityExpanded.value,
+                            onDismissRequest = { state.priorityExpanded.value = false },
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Priority.entries.forEach { priority ->
                                 DropdownMenuItem(
                                     onClick = {
-                                        selectedPriority.value = priority
-                                        priorityExpanded.value = false
+                                        viewModel.setPriority(priority)
+                                        state.priorityExpanded.value = false
                                     },
                                     text = { Text(text = priority.toString()) }
                                 )
@@ -416,28 +413,73 @@ fun CreateScreen(
                         color = Black,
                         modifier = Modifier.padding(start = 16.dp)
                     )
-                    TextField(
-                        value = routineName.value,
-                        onValueChange = { routineName.value = it },
-                        placeholder = {
-                            Text(
-                                "Tous les...",
-                                color = Grey,
-                                fontFamily = robotoSerifFontFamily
-                            )
-                        },
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .border(1.dp, Grey, RoundedCornerShape(8.dp)),
-                        colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.Transparent,
-                            unfocusedContainerColor = Color.Transparent,
-                            disabledContainerColor = Color.Transparent,
-                            cursorColor = Black,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent
-                        )
-                    )
+                            .border(1.dp, Grey, RoundedCornerShape(8.dp))
+                            .padding(12.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .pointerInput(Unit) {
+                                    detectTapGestures {
+                                        state.periodExpanded.value = !state.periodExpanded.value
+                                    }
+                                }
+                        ) {
+                            Text(
+                                text = viewModel.selectedPeriod.value?.toString()
+                                    ?: "Sélectionnez une périodicité",
+                                fontFamily = robotoSerifFontFamily,
+                                color = if (viewModel.selectedPeriod.value == null) Grey else Black,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(8.dp)
+                            )
+                            Image(
+                                painter = painterResource(id = R.drawable.arrowdown),
+                                contentDescription = "ArrowDown",
+                                modifier = Modifier.size(40.dp)
+                            )
+                        }
+
+                        DropdownMenu(
+                            expanded = state.periodExpanded.value,
+                            onDismissRequest = { state.periodExpanded.value = false },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            DropdownMenuItem(
+                                onClick = {
+                                    viewModel.setPeriod(Period.ofDays(1))
+                                    state.periodExpanded.value = false
+                                },
+                                text = { Text(text = "Journalière") }
+                            )
+                            DropdownMenuItem(
+                                onClick = {
+                                    viewModel.setPeriod(Period.ofWeeks(1))
+                                    state.periodExpanded.value = false
+                                },
+                                text = { Text(text = "Hebdomadaire") }
+                            )
+                            DropdownMenuItem(
+                                onClick = {
+                                    viewModel.setPeriod(Period.ofMonths(1))
+                                    state.periodExpanded.value = false
+                                },
+                                text = { Text(text = "Mensuelle") }
+                            )
+                            DropdownMenuItem(
+                                onClick = {
+                                    viewModel.setPeriod(Period.ofYears(1))
+                                    state.periodExpanded.value = false
+                                },
+                                text = { Text(text = "Annuelle") }
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -463,7 +505,11 @@ fun CreateScreen(
         // Bouton Publier ma routine
         Button(
             onClick = {
-                // Action pour publier la routine
+                try {
+                    viewModel.createRoutine()
+                } catch (e: Exception) {
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                }
             },
             modifier = Modifier
                 .align(Alignment.BottomCenter) // S'assure que le bouton est bien en bas

@@ -172,7 +172,13 @@ fun RoutineCard(
                         )
 
                         Text(
-                            text = "De ${format(routine.startTime)} à ${format(routine.endTime)}",
+                            text = "De ${format(routine.startTime)} à ${
+                                routine.endTime?.let {
+                                    format(
+                                        it
+                                    )
+                                } ?: "jamais"
+                            }",
                             fontFamily = robotoSerifFontFamily,
                             fontSize = 16.sp,
                             color = Black,

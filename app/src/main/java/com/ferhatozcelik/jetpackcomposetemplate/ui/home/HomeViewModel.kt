@@ -30,7 +30,7 @@ class HomeViewModel @Inject constructor() :
         return getRoutines()
     }
 
-    private fun deleteRoutine(routine: Routine) {
+    fun deleteRoutine(routine: Routine) {
         _routines.value = _routines.value.filter { it != routine }
         deleteRoutineFromList(routine)
     }

@@ -10,7 +10,7 @@ data class Routine(
     var description: String? = null,
     var category: Category,
     var startTime: LocalDateTime,
-    var endTime: LocalDateTime,
+    var endTime: LocalDateTime? = null,
     var period: Period? = null, // when null, do it once
     var priority: Priority
 )

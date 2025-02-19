@@ -41,7 +41,6 @@ private val routines: MutableList<Routine> = mutableListOf(
         priority = Priority.Low,
         category = Category.Work,
         startTime = LocalDateTime.now(),
-        endTime = LocalDateTime.now()
     )
 )
 
