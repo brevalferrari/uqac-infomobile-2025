@@ -26,7 +26,11 @@ private val routines: MutableList<Routine> = mutableListOf(
         "Faire les courses",
         category = Category.Health,
         priority = Priority.Medium,
-        description = """PQ, papier cuisson, papier alu, papier A4""".trimIndent(),
+        description = """
+            - PQ
+            - papier cuisson
+            - papier alu
+            - papier A4""".trimIndent(),
         startTime = LocalDateTime.now(),
         endTime = LocalDateTime.now()
     ),
