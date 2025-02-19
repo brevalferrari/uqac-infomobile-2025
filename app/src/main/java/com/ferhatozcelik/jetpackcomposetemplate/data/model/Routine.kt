@@ -9,8 +9,8 @@ data class Routine(
     var name: String,
     var description: String? = null,
     var category: Category,
-    var startTime: LocalDateTime? = null, // when null, start now
-    var endTime: LocalDateTime? = null, // when null, stop never
+    var startTime: LocalDateTime,
+    var endTime: LocalDateTime,
     var period: Period? = null, // when null, do it once
     var priority: Priority
 )
