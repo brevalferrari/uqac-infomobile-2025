@@ -25,18 +25,16 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Black
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Grey
-import androidx.compose.foundation.clickable
-import androidx.navigation.NavController
 import com.ferhatozcelik.jetpackcomposetemplate.util.format
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RoutineCard(
-    routine: Routine,
-    navController: NavController
+    routine: Routine, navController: NavController
 ) {
     val robotoSerifFontFamily = FontFamily(
         Font(com.ferhatozcelik.jetpackcomposetemplate.R.font.roboto),
@@ -53,14 +51,11 @@ fun RoutineCard(
         colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
         Column(
-            modifier = Modifier
-                .padding(top = 16.dp)
-            /* .verticalScroll(rememberScrollState()) */
+            modifier = Modifier.padding(top = 16.dp)/* .verticalScroll(rememberScrollState()) */
         ) {
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = routine.name,
@@ -71,8 +66,7 @@ fun RoutineCard(
 
                 Row {
 
-                    Image(
-                        painter = painterResource(id = com.ferhatozcelik.jetpackcomposetemplate.R.drawable.edit),
+                    Image(painter = painterResource(id = com.ferhatozcelik.jetpackcomposetemplate.R.drawable.edit),
                         contentDescription = "Edit",
                         modifier = Modifier
                             .size(24.dp)
@@ -150,14 +144,12 @@ fun RoutineCard(
                             color = Grey
                         )
 
-                        Text(
-                            text = routine.period?.let { "Tous les " + format(it) }
-                                ?: "Ne se répète pas",
+                        Text(text = routine.period?.let { "Tous les " + format(it) }
+                            ?: "Ne se répète pas",
                             fontFamily = robotoSerifFontFamily,
                             fontSize = 16.sp,
                             color = Black,
-                            modifier = Modifier.padding(top = 4.dp)
-                        )
+                            modifier = Modifier.padding(top = 4.dp))
                     }
                 }
             }

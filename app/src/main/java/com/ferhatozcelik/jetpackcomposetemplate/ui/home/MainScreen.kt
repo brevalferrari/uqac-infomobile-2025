@@ -36,8 +36,7 @@ import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.White
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainScreen(
-    navController: NavController,
-    viewModel: HomeViewModel
+    navController: NavController, viewModel: HomeViewModel
 ) {
     val robotoSerifFontFamily = FontFamily(
         Font(com.ferhatozcelik.jetpackcomposetemplate.R.font.roboto),
@@ -95,17 +94,14 @@ fun MainScreen(
         Button(
             onClick = {
                 navController.navigate(Screen.Create.route)
-            },
-            modifier = Modifier
+            }, modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .size(56.dp), // Taille du bouton
             colors = ButtonDefaults.buttonColors(containerColor = Black)
         ) {
             Text(
-                text = "+",
-                color = White, // Couleur du texte
-                fontSize = 25.sp,
-                textAlign = TextAlign.Center
+                text = "+", color = White, // Couleur du texte
+                fontSize = 25.sp, textAlign = TextAlign.Center
             )
         }
 

@@ -1,4 +1,4 @@
-package com.ferhatozcelik.jetpackcomposetemplate.ui.Update
+package com.ferhatozcelik.jetpackcomposetemplate.ui.update
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
