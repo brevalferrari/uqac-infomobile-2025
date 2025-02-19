@@ -100,6 +100,8 @@ firebase = { group = "com.google.firebase", name = "firebase-bom", version.ref =
 analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 
+splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "core-ktx" }
+
 [plugins]
 com-android-application = { id = "com.android.application", version.ref = "agp" }
 com-android-library = { id = "com.android.library", version.ref = "agp" }
