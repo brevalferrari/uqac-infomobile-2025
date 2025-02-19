@@ -1,6 +1,7 @@
 package com.ferhatozcelik.jetpackcomposetemplate.ui.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,10 +30,13 @@ import androidx.compose.ui.unit.sp
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Black
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Grey
+import androidx.compose.foundation.clickable
+import androidx.navigation.NavController
 
 @Composable
 fun RoutineCard(
-    routine: Routine
+    routine: Routine,
+    navController: NavController
 ) {
     val robotoSerifFontFamily = FontFamily(
         Font(com.ferhatozcelik.jetpackcomposetemplate.R.font.roboto),
@@ -70,7 +74,12 @@ fun RoutineCard(
                     Image(
                         painter = painterResource(id = com.ferhatozcelik.jetpackcomposetemplate.R.drawable.edit),
                         contentDescription = "Edit",
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier
+                            .size(24.dp)
+                            .clickable {
+                                navController.navigate("edit/${routine.id}")
+                            }
+
                     )
 
                     Spacer(modifier = Modifier.width(8.dp))
