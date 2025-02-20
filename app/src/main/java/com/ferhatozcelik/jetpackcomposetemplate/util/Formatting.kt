@@ -40,7 +40,10 @@ fun format(datetime: LocalDateTime): String {
 
     val output = StringBuilder()
     output.append("${time.hour}h")
-    if (time.minute != 0) output.append(time.minute)
+    if (time.minute != 0) {
+        if (time.minute < 10) output.append("0")
+        output.append(time.minute)
+    }
     if (LocalDateTime.now()
             .minusDays(1) >= datetime
     ) {
