@@ -20,11 +20,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TimePicker
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,6 +45,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.ferhatozcelik.jetpackcomposetemplate.R
@@ -48,8 +55,11 @@ import com.ferhatozcelik.jetpackcomposetemplate.navigation.Screen
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Black
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Grey
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.White
+import com.ferhatozcelik.jetpackcomposetemplate.util.DateUtils
 import java.time.Period
+import java.time.format.DateTimeFormatter
 
+@OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CreateScreen(
@@ -257,12 +267,14 @@ fun CreateScreen(
                                     .fillMaxWidth()
                                     .pointerInput(Unit) {
                                         detectTapGestures {
-                                            // Action pour ouvrir le sélecteur de date
+                                            state.showDatePicker1.value = true
                                         }
                                     }
                             ) {
                                 Text(
-                                    text = "00/00/00",
+                                    text = viewModel.selectedStartDate.value.format(
+                                        DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                                    ),
                                     fontFamily = robotoSerifFontFamily,
                                     modifier = Modifier
                                         .weight(1f)
@@ -275,7 +287,7 @@ fun CreateScreen(
                                         .size(24.dp)
                                         .pointerInput(Unit) {
                                             detectTapGestures {
-                                                // Action pour ouvrir le sélecteur de date
+                                                state.showDatePicker1.value = true
                                             }
                                         }
                                 )
@@ -310,12 +322,14 @@ fun CreateScreen(
                                     .fillMaxWidth()
                                     .pointerInput(Unit) {
                                         detectTapGestures {
-                                            // Action pour ouvrir le sélecteur d'heure
+                                            state.showTimePicker1.value = true
                                         }
                                     }
                             ) {
                                 Text(
-                                    text = "00:00 PM",
+                                    text = viewModel.selectedStartDate.value.format(
+                                        DateTimeFormatter.ofPattern("HH:mm")
+                                    ),
                                     fontFamily = robotoSerifFontFamily,
                                     modifier = Modifier
                                         .weight(1f)
@@ -328,7 +342,7 @@ fun CreateScreen(
                                         .size(24.dp)
                                         .pointerInput(Unit) {
                                             detectTapGestures {
-                                                // Action pour ouvrir le sélecteur d'heure
+                                                state.showTimePicker1.value = true
                                             }
                                         }
                                 )
@@ -337,7 +351,222 @@ fun CreateScreen(
                     }
                 }
 
+                if (state.showDatePicker1.value) {
+                    DatePickerDialog(
+                        onDismissRequest = { state.showDatePicker1.value = false },
+                        dismissButton = {
+                            TextButton(onClick = { state.showDatePicker1.value = false }) {
+                                Text("Cancel")
+                            }
+                        },
+                        confirmButton = {
+                            TextButton(onClick = {
+                                val date =
+                                    DateUtils().convertMillisToLocalDate(state.datePickerState.selectedDateMillis!!)
+                                viewModel.setStartDate(
+                                    viewModel.selectedStartDate.value.withDayOfMonth(date.dayOfMonth)
+                                        .withMonth(date.month.value).withYear(date.year)
+                                )
+                                state.showDatePicker1.value = false
+                            }) {
+                                Text("OK")
+                            }
+                        }
+
+                    ) {
+                        DatePicker(state = state.datePickerState)
+                    }
+                }
+
+                if (state.showTimePicker1.value) {
+                    Dialog(onDismissRequest = { state.showTimePicker1.value = false }) {
+                        Column {
+                            TimePicker(
+                                state = state.timePickerState
+                            )
+                            TextButton(onClick = {
+                                viewModel.setStartDate(
+                                    viewModel.selectedStartDate.value.withMinute(
+                                        state.timePickerState.minute
+                                    ).withHour(state.timePickerState.hour)
+                                )
+                                state.showTimePicker1.value = false
+                            }) { Text("OK") }
+                        }
+                    }
+                }
+
                 Spacer(modifier = Modifier.height(16.dp))
+
+                Row {
+                    Checkbox(
+                        checked = viewModel.hasEndDate.value,
+                        onCheckedChange = { viewModel.setHasEndDate(it) })
+                    Text("La routine a une date de fin")
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                if (viewModel.hasEndDate.value) {
+                    // Date + Heures
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        // Routine Date
+                        Column(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(
+                                text = "Date *",
+                                fontFamily = robotoSerifFontFamily,
+                                fontStyle = FontStyle.Italic,
+                                fontSize = 12.sp,
+                                color = Black,
+                                modifier = Modifier.padding(start = 16.dp)
+                            )
+
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .border(1.dp, Grey, RoundedCornerShape(8.dp))
+                                    .padding(12.dp)
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .pointerInput(Unit) {
+                                            detectTapGestures {
+                                                state.showDatePicker2.value = true
+                                            }
+                                        }
+                                ) {
+                                    Text(
+                                        text = viewModel.selectedEndDate.value.format(
+                                            DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                                        ),
+                                        fontFamily = robotoSerifFontFamily,
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .padding(8.dp)
+                                    )
+                                    Image(
+                                        painter = painterResource(id = R.drawable.calendar),
+                                        contentDescription = "Calendar Icon",
+                                        modifier = Modifier
+                                            .size(24.dp)
+                                            .pointerInput(Unit) {
+                                                detectTapGestures {
+                                                    state.showDatePicker2.value = true
+                                                }
+                                            }
+                                    )
+                                }
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.size(16.dp)) // Espace entre date et heure
+
+                        // Heures
+                        Column(
+                            modifier = Modifier.weight(1f)
+                        ) {
+                            Text(
+                                text = "Heures *",
+                                fontFamily = robotoSerifFontFamily,
+                                fontStyle = FontStyle.Italic,
+                                fontSize = 12.sp,
+                                color = Black,
+                                modifier = Modifier.padding(start = 16.dp)
+                            )
+
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .border(1.dp, Grey, RoundedCornerShape(8.dp))
+                                    .padding(12.dp)
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .pointerInput(Unit) {
+                                            detectTapGestures {
+                                                state.showTimePicker2.value = true
+                                            }
+                                        }
+                                ) {
+                                    Text(
+                                        text = viewModel.selectedEndDate.value.format(
+                                            DateTimeFormatter.ofPattern("HH:mm")
+                                        ),
+                                        fontFamily = robotoSerifFontFamily,
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .padding(8.dp)
+                                    )
+                                    Image(
+                                        painter = painterResource(id = R.drawable.clock),
+                                        contentDescription = "Clock Icon",
+                                        modifier = Modifier
+                                            .size(24.dp)
+                                            .pointerInput(Unit) {
+                                                detectTapGestures {
+                                                    state.showTimePicker2.value = true
+                                                }
+                                            }
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    if (state.showDatePicker2.value) {
+                        DatePickerDialog(
+                            onDismissRequest = { state.showDatePicker2.value = false },
+                            dismissButton = {
+                                TextButton(onClick = { state.showDatePicker2.value = false }) {
+                                    Text("Cancel")
+                                }
+                            },
+                            confirmButton = {
+                                TextButton(onClick = {
+                                    val date =
+                                        DateUtils().convertMillisToLocalDate(state.datePickerState.selectedDateMillis!!)
+                                    viewModel.setEndDate(
+                                        viewModel.selectedEndDate.value.withDayOfMonth(date.dayOfMonth)
+                                            .withMonth(date.month.value).withYear(date.year)
+                                    )
+                                    state.showDatePicker2.value = false
+                                }) {
+                                    Text("OK")
+                                }
+                            }
+
+                        ) {
+                            DatePicker(state = state.datePickerState)
+                        }
+                    }
+
+                    if (state.showTimePicker2.value) {
+                        Dialog(onDismissRequest = { state.showTimePicker2.value = false }) {
+                            Column {
+                                TimePicker(
+                                    state = state.timePickerState
+                                )
+                                TextButton(onClick = {
+                                    viewModel.setEndDate(
+                                        viewModel.selectedEndDate.value.withMinute(
+                                            state.timePickerState.minute
+                                        ).withHour(state.timePickerState.hour)
+                                    )
+                                    state.showTimePicker2.value = false
+                                }) { Text("OK") }
+                            }
+                        }
+                    }
+                }
 
                 // Priority
                 Column {
