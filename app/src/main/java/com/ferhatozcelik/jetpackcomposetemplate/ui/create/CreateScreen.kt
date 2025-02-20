@@ -507,6 +507,7 @@ fun CreateScreen(
             onClick = {
                 try {
                     viewModel.createRoutine()
+                    navController.navigate(Screen.Main.route)
                 } catch (e: Exception) {
                     Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                 }
