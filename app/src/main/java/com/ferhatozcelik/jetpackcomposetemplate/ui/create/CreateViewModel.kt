@@ -41,25 +41,20 @@ class CreateViewModel @Inject constructor(private val exampleRepository: Example
     var selectedPeriod: State<Period?> = _selectedPeriod
 
     fun createRoutine() {
-        if (routineName.value.isBlank()) throw MissingFieldException("nom")
-        // if (routineDescription.value.isBlank()) throw MissingFieldException("description")
-        if (selectedCategory.value == null) throw MissingFieldException("catégorie")
-        if (selectedPriority.value == null) throw MissingFieldException("importance")
-        if (selectedPeriod.value == null) throw MissingFieldException("période")
         addOrUpdateRoutine(
             Routine(
                 id = UUID.randomUUID(),
-                name = routineName.value,
+                name = if (routineName.value.isBlank()) throw MissingFieldException("nom") else routineName.value,
                 description = routineDescription.value,
-                category = selectedCategory.value!!,
+                category = selectedCategory.value ?: throw MissingFieldException("catégorie"),
                 startTime = selectedStartDate.value,
                 endTime = if (hasEndDate.value) {
                     selectedEndDate.value
                 } else {
                     null
                 },
-                period = selectedPeriod.value!!,
-                priority = selectedPriority.value!!
+                period = selectedPeriod.value ?: throw MissingFieldException("périodicité"),
+                priority = selectedPriority.value ?: throw MissingFieldException("importance")
             )
         )
     }
