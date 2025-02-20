@@ -430,7 +430,15 @@ fun CreateScreen(
                                 }
                         ) {
                             Text(
-                                text = viewModel.selectedPeriod.value?.toString()
+                                text = viewModel.selectedPeriod.value?.let {
+                                    when (it) {
+                                        Period.ofDays(1) -> "Journalière"
+                                        Period.ofWeeks(1) -> "Hebdomadaire"
+                                        Period.ofMonths(1) -> "Mensuelle"
+                                        Period.ofYears(1) -> "Annuelle"
+                                        else -> it.toString()
+                                    }
+                                }
                                     ?: "Sélectionnez une périodicité",
                                 fontFamily = robotoSerifFontFamily,
                                 color = if (viewModel.selectedPeriod.value == null) Grey else Black,
