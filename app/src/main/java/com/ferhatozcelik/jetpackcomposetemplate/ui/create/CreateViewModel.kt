@@ -53,7 +53,7 @@ class CreateViewModel @Inject constructor(private val exampleRepository: Example
                 } else {
                     null
                 },
-                period = selectedPeriod.value ?: throw MissingFieldException("périodicité"),
+                period = selectedPeriod.value,
                 priority = selectedPriority.value ?: throw MissingFieldException("importance")
             )
         )
@@ -87,7 +87,7 @@ class CreateViewModel @Inject constructor(private val exampleRepository: Example
         _selectedPriority.value = priority
     }
 
-    fun setPeriod(period: Period) {
+    fun setPeriod(period: Period?) {
         _selectedPeriod.value = period
     }
 

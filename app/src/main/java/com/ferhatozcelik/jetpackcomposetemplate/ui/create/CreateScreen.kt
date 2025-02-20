@@ -439,9 +439,9 @@ fun CreateScreen(
                                         else -> it.toString()
                                     }
                                 }
-                                    ?: "Sélectionnez une périodicité",
+                                    ?: "Aucune",
                                 fontFamily = robotoSerifFontFamily,
-                                color = if (viewModel.selectedPeriod.value == null) Grey else Black,
+                                color = Black,
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(8.dp)
@@ -458,6 +458,13 @@ fun CreateScreen(
                             onDismissRequest = { state.periodExpanded.value = false },
                             modifier = Modifier.fillMaxWidth()
                         ) {
+                            DropdownMenuItem(
+                                onClick = {
+                                    viewModel.setPeriod(null)
+                                    state.periodExpanded.value = false
+                                },
+                                text = { Text(text = "Aucune") }
+                            )
                             DropdownMenuItem(
                                 onClick = {
                                     viewModel.setPeriod(Period.ofDays(1))
