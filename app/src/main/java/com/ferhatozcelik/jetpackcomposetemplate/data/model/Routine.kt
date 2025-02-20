@@ -7,7 +7,7 @@ import java.util.UUID
 data class Routine(
     var id: UUID,
     var name: String,
-    var description: String? = null,
+    var description: String = "",
     var category: Category,
     var startTime: LocalDateTime,
     var endTime: LocalDateTime? = null,

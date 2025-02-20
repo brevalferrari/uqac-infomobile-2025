@@ -91,7 +91,9 @@ fun RoutineCard(
 
             // Description de la routine
             Text(
-                text = routine.description ?: "Aucune description disponible",
+                text = routine.description.ifBlank {
+                    "Aucune description disponible"
+                },
                 fontFamily = robotoSerifFontFamily,
                 fontSize = 18.sp,
                 color = Black,

@@ -42,7 +42,7 @@ class CreateViewModel @Inject constructor(private val exampleRepository: Example
 
     fun createRoutine() {
         if (routineName.value.isBlank()) throw MissingFieldException("nom")
-        if (routineDescription.value.isBlank()) throw MissingFieldException("description")
+        // if (routineDescription.value.isBlank()) throw MissingFieldException("description")
         if (selectedCategory.value == null) throw MissingFieldException("catégorie")
         if (selectedPriority.value == null) throw MissingFieldException("importance")
         if (selectedPeriod.value == null) throw MissingFieldException("période")
