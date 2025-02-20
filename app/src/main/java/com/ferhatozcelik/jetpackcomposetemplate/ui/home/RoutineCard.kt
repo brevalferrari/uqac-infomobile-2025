@@ -34,7 +34,7 @@ import com.ferhatozcelik.jetpackcomposetemplate.util.format
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RoutineCard(
-    routine: Routine, navController: NavController
+    routine: Routine, navController: NavController, viewModel: HomeViewModel
 ) {
     val robotoSerifFontFamily = FontFamily(
         Font(com.ferhatozcelik.jetpackcomposetemplate.R.font.roboto),
@@ -81,7 +81,9 @@ fun RoutineCard(
                     Image(
                         painter = painterResource(id = com.ferhatozcelik.jetpackcomposetemplate.R.drawable.delete),
                         contentDescription = "Delete",
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier
+                            .size(24.dp)
+                            .clickable { viewModel.deleteRoutine(routine) }
                     )
 
                 }

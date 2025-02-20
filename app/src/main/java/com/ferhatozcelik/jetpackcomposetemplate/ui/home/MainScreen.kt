@@ -84,7 +84,7 @@ fun MainScreen(
             )
             LazyColumn {
                 items(viewModel.routines.value) { routine ->
-                    RoutineCard(routine, navController)
+                    RoutineCard(routine, navController, viewModel)
                     Spacer(modifier = Modifier.height(8.dp))
                 }
             }
