@@ -724,6 +724,31 @@ fun CreateScreen(
                             )
                         }
                     }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    // Bouton Publier ma routine
+                    Button(
+                        onClick = {
+                            try {
+                                viewModel.createRoutine()
+                                navController.navigate(Screen.Main.route)
+                            } catch (e: Exception) {
+                                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                            }
+                        },
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(containerColor = Black)
+                    ) {
+                        Text(
+                            text = "Publier ma routine",
+                            fontFamily = robotoSerifFontFamily,
+                            color = White,
+                            modifier = Modifier.padding(vertical = 12.dp)
+                        )
+                    }
                 }
             }
         }
@@ -743,30 +768,6 @@ fun CreateScreen(
                 contentDescription = "Back Home",
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier.size(140.dp)
-            )
-        }
-
-        // Bouton Publier ma routine
-        Button(
-            onClick = {
-                try {
-                    viewModel.createRoutine()
-                    navController.navigate(Screen.Main.route)
-                } catch (e: Exception) {
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
-                }
-            },
-            modifier = Modifier
-                .align(Alignment.BottomCenter) // S'assure que le bouton est bien en bas
-                .padding(16.dp)
-                .fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Black)
-        ) {
-            Text(
-                text = "Publier ma routine",
-                fontFamily = robotoSerifFontFamily,
-                color = White,
-                modifier = Modifier.padding(vertical = 12.dp)
             )
         }
 
