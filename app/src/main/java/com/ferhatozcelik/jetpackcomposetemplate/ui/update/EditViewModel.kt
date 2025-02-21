@@ -1,4 +1,4 @@
-package com.ferhatozcelik.jetpackcomposetemplate.ui.create
+package com.ferhatozcelik.jetpackcomposetemplate.ui.update
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -15,14 +15,15 @@ import com.ferhatozcelik.jetpackcomposetemplate.util.addOrUpdateRoutine
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.LocalDateTime
 import java.time.Period
-import java.util.UUID
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
-class CreateViewModel @Inject constructor(private val exampleRepository: ExampleRepository) :
+class EditViewModel @Inject constructor(
+    private val exampleRepository: ExampleRepository,
+) :
     ViewModel() {
-    private val TAG = CreateViewModel::class.java.simpleName
+    private val TAG = EditViewModel::class.java.simpleName
     private val _routineName: MutableState<String> = mutableStateOf("")
     private val _routineDescription: MutableState<String> = mutableStateOf("")
     private val _selectedCategory: MutableState<Category?> = mutableStateOf(null)
@@ -41,10 +42,10 @@ class CreateViewModel @Inject constructor(private val exampleRepository: Example
     var selectedPriority: State<Priority?> = _selectedPriority
     var selectedPeriod: State<Period?> = _selectedPeriod
 
-    fun createRoutine() {
+    fun updateRoutine(routine: Routine) {
         addOrUpdateRoutine(
             Routine(
-                id = UUID.randomUUID(),
+                id = routine.id,
                 name = if (routineName.value.isBlank()) throw MissingFieldException("nom") else routineName.value,
                 description = routineDescription.value,
                 category = selectedCategory.value ?: throw MissingFieldException("catégorie"),

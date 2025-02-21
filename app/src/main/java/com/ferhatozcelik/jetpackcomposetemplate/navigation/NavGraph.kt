@@ -14,6 +14,7 @@ import com.ferhatozcelik.jetpackcomposetemplate.ui.create.CreateScreenState
 import com.ferhatozcelik.jetpackcomposetemplate.ui.home.HomeViewModel
 import com.ferhatozcelik.jetpackcomposetemplate.ui.home.MainScreen
 import com.ferhatozcelik.jetpackcomposetemplate.ui.update.EditScreen
+import com.ferhatozcelik.jetpackcomposetemplate.ui.update.EditScreenState
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,7 +44,18 @@ fun NavGraph(navController: NavHostController) {
         }
         composable("edit/{routineId}") { backStackEntry ->
             val routineId = backStackEntry.arguments?.getString("routineId")
-            EditScreen(navController = navController, routineId = routineId)
+            val cal = Calendar.getInstance()
+            EditScreen(
+                navController = navController, routineId = routineId,
+                state = EditScreenState(
+                    datePickerState = rememberDatePickerState(),
+                    timePickerState = TimePickerState(
+                        cal.get(Calendar.HOUR),
+                        cal.get(Calendar.MINUTE),
+                        true
+                    )
+                )
+            )
         }
     }
 }

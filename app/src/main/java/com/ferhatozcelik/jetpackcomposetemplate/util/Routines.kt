@@ -50,8 +50,13 @@ fun getRoutines(): List<Routine> {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
+fun getRoutine(id: UUID): Routine? {
+    return routines.find { it.id == id }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
 fun addOrUpdateRoutine(routine: Routine) {
-    routines.find { it.id == routine.id }?.let {
+    getRoutine(routine.id)?.let {
         routines.remove(it)
     }
     routines.add(routine)
