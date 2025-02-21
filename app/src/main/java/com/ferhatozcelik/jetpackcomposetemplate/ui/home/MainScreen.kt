@@ -7,10 +7,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -82,11 +85,23 @@ fun MainScreen(
                 fontSize = 54.sp,
                 color = Grey,
             )
-            LazyColumn {
-                items(viewModel.routines.value) { routine ->
-                    RoutineCard(routine, navController, viewModel)
-                    Spacer(modifier = Modifier.height(8.dp))
+            if (viewModel.routines.value.isNotEmpty())
+                LazyColumn {
+                    items(viewModel.routines.value) { routine ->
+                        RoutineCard(routine, navController, viewModel)
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
                 }
+            else Column {
+                Text(
+                    "Pas de routines pour l'instant !\nCréez-en avec le bouton \"+\" en bas à gauche.",
+                    fontSize = 20.sp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .wrapContentHeight(align = Alignment.CenterVertically),
+                    textAlign = TextAlign.Center
+                )
             }
         }
 
