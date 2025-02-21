@@ -4,6 +4,7 @@ import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -391,18 +393,32 @@ fun EditScreen(
 
                     if (state.showTimePicker1.value) {
                         Dialog(onDismissRequest = { state.showTimePicker1.value = false }) {
-                            Column {
-                                TimePicker(
-                                    state = state.timePickerState
-                                )
-                                TextButton(onClick = {
-                                    viewModel.setStartDate(
-                                        viewModel.selectedStartDate.value.withMinute(
-                                            state.timePickerState.minute
-                                        ).withHour(state.timePickerState.hour)
-                                    )
-                                    state.showTimePicker1.value = false
-                                }) { Text("OK") }
+                            Column(modifier = Modifier.background(Color.White)) {
+                                Box {
+                                    Column {
+                                        Row {
+                                            TimePicker(
+                                                state = state.timePickerState,
+                                                modifier = Modifier.wrapContentWidth(Alignment.CenterHorizontally)
+                                            )
+                                        }
+                                        Row {
+                                            TextButton(
+                                                onClick = {
+                                                    viewModel.setStartDate(
+                                                        viewModel.selectedStartDate.value.withMinute(
+                                                            state.timePickerState.minute
+                                                        ).withHour(state.timePickerState.hour)
+                                                    )
+                                                    state.showTimePicker1.value = false
+                                                },
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .wrapContentWidth(Alignment.End)
+                                            ) { Text("OK") }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -562,18 +578,32 @@ fun EditScreen(
 
                         if (state.showTimePicker2.value) {
                             Dialog(onDismissRequest = { state.showTimePicker2.value = false }) {
-                                Column {
-                                    TimePicker(
-                                        state = state.timePickerState
-                                    )
-                                    TextButton(onClick = {
-                                        viewModel.setEndDate(
-                                            viewModel.selectedEndDate.value.withMinute(
-                                                state.timePickerState.minute
-                                            ).withHour(state.timePickerState.hour)
-                                        )
-                                        state.showTimePicker2.value = false
-                                    }) { Text("OK") }
+                                Column(modifier = Modifier.background(Color.White)) {
+                                    Box {
+                                        Column {
+                                            Row {
+                                                TimePicker(
+                                                    state = state.timePickerState,
+                                                    modifier = Modifier.wrapContentWidth(Alignment.CenterHorizontally)
+                                                )
+                                            }
+                                            Row {
+                                                TextButton(
+                                                    onClick = {
+                                                        viewModel.setEndDate(
+                                                            viewModel.selectedEndDate.value.withMinute(
+                                                                state.timePickerState.minute
+                                                            ).withHour(state.timePickerState.hour)
+                                                        )
+                                                        state.showTimePicker2.value = false
+                                                    },
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .wrapContentWidth(Alignment.End)
+                                                ) { Text("OK") }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
