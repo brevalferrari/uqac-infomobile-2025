@@ -6,13 +6,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Category
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Priority
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
-import com.ferhatozcelik.jetpackcomposetemplate.data.repository.ExampleRepository
+import com.ferhatozcelik.jetpackcomposetemplate.data.repository.AppRepository
 import com.ferhatozcelik.jetpackcomposetemplate.util.MissingFieldException
-import com.ferhatozcelik.jetpackcomposetemplate.util.addOrUpdateRoutine
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.Period
 import java.util.UUID
@@ -20,44 +21,43 @@ import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
-class CreateViewModel @Inject constructor(private val exampleRepository: ExampleRepository) :
-    ViewModel() {
-    private val TAG = CreateViewModel::class.java.simpleName
-    private val _routineName: MutableState<String> = mutableStateOf("")
-    private val _routineDescription: MutableState<String> = mutableStateOf("")
-    private val _selectedCategory: MutableState<Category?> = mutableStateOf(null)
-    private val _selectedStartDate: MutableState<LocalDateTime> =
-        mutableStateOf(LocalDateTime.now())
-    private val _hasEndDate: MutableState<Boolean> = mutableStateOf(false)
-    private val _selectedEndDate: MutableState<LocalDateTime> = mutableStateOf(LocalDateTime.now())
-    private val _selectedPriority: MutableState<Priority?> = mutableStateOf(null)
-    private val _selectedPeriod: MutableState<Period?> = mutableStateOf(null)
-    var routineName: State<String> = _routineName
-    var routineDescription: State<String> = _routineDescription
-    var selectedCategory: State<Category?> = _selectedCategory
-    var selectedStartDate: State<LocalDateTime> = _selectedStartDate
-    var hasEndDate: State<Boolean> = _hasEndDate
-    var selectedEndDate: State<LocalDateTime> = _selectedEndDate
-    var selectedPriority: State<Priority?> = _selectedPriority
-    var selectedPeriod: State<Period?> = _selectedPeriod
+class CreateViewModel @Inject constructor(
+    private val appRepository: AppRepository
+) : ViewModel() {
+
+    private val _routineName = mutableStateOf("")
+    private val _routineDescription = mutableStateOf("")
+    private val _selectedCategory = mutableStateOf<Category?>(null)
+    private val _selectedStartDate = mutableStateOf(LocalDateTime.now())
+    private val _hasEndDate = mutableStateOf(false)
+    private val _selectedEndDate = mutableStateOf(LocalDateTime.now())
+    private val _selectedPriority = mutableStateOf<Priority?>(null)
+    private val _selectedPeriod = mutableStateOf<Period?>(null)
+
+    val routineName: State<String> = _routineName
+    val routineDescription: State<String> = _routineDescription
+    val selectedCategory: State<Category?> = _selectedCategory
+    val selectedStartDate: State<LocalDateTime> = _selectedStartDate
+    val hasEndDate: State<Boolean> = _hasEndDate
+    val selectedEndDate: State<LocalDateTime> = _selectedEndDate
+    val selectedPriority: State<Priority?> = _selectedPriority
+    val selectedPeriod: State<Period?> = _selectedPeriod
 
     fun createRoutine() {
-        addOrUpdateRoutine(
-            Routine(
+        viewModelScope.launch {
+            val routine = Routine(
                 id = UUID.randomUUID(),
                 name = if (routineName.value.isBlank()) throw MissingFieldException("nom") else routineName.value,
                 description = routineDescription.value,
                 category = selectedCategory.value ?: throw MissingFieldException("catégorie"),
                 startTime = selectedStartDate.value,
-                endTime = if (hasEndDate.value) {
-                    selectedEndDate.value
-                } else {
-                    null
-                },
+                endTime = if (hasEndDate.value) selectedEndDate.value else null,
                 period = selectedPeriod.value,
                 priority = selectedPriority.value ?: throw MissingFieldException("importance")
             )
-        )
+
+            appRepository.addOrUpdateRoutine(routine)
+        }
     }
 
     fun setName(name: String) {
@@ -91,5 +91,4 @@ class CreateViewModel @Inject constructor(private val exampleRepository: Example
     fun setPeriod(period: Period?) {
         _selectedPeriod.value = period
     }
-
 }

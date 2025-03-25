@@ -6,6 +6,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -26,10 +27,13 @@ fun NavGraph(navController: NavHostController) {
         navController = navController, startDestination = Screen.Main.route
     ) {
         composable(Screen.Main.route) {
+            val viewModel: HomeViewModel = hiltViewModel()
             MainScreen(
-                navController = navController, viewModel = HomeViewModel()
+                navController = navController,
+                viewModel = viewModel
             )
         }
+
         composable(Screen.Create.route) {
             val cal = Calendar.getInstance()
             val screenState = CreateScreenState(

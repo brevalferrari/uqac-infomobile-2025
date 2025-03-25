@@ -6,32 +6,36 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
-import com.ferhatozcelik.jetpackcomposetemplate.util.deleteRoutineFromList
-import com.ferhatozcelik.jetpackcomposetemplate.util.getRoutines
+import com.ferhatozcelik.jetpackcomposetemplate.util.RoutineManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
-class HomeViewModel @Inject constructor() :
-    ViewModel() {
-    private val TAG = HomeViewModel::class.java.simpleName
+class HomeViewModel @Inject constructor(
+    private val routineManager: RoutineManager
+) : ViewModel() {
 
     private val _routines: MutableState<List<Routine>> = mutableStateOf(emptyList())
-    var routines: State<List<Routine>> = _routines
+    val routines: State<List<Routine>> = _routines
 
     init {
-        _routines.value = loadRoutines()
+        loadRoutines()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun loadRoutines(): List<Routine> {
-        return getRoutines()
+    private fun loadRoutines() {
+        viewModelScope.launch {
+            _routines.value = routineManager.getRoutines()
+        }
     }
 
     fun deleteRoutine(routine: Routine) {
-        _routines.value = _routines.value.filter { it != routine }
-        deleteRoutineFromList(routine)
+        viewModelScope.launch {
+            routineManager.deleteRoutine(routine)
+            _routines.value = _routines.value.filter { it.id != routine.id }
+        }
     }
 }
