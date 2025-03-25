@@ -2,21 +2,17 @@ package com.ferhatozcelik.jetpackcomposetemplate.ui.create
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ferhatozcelik.jetpackcomposetemplate.data.model.Category
-import com.ferhatozcelik.jetpackcomposetemplate.data.model.Priority
-import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
+import com.ferhatozcelik.jetpackcomposetemplate.data.model.*
 import com.ferhatozcelik.jetpackcomposetemplate.data.repository.AppRepository
 import com.ferhatozcelik.jetpackcomposetemplate.util.MissingFieldException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.Period
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -43,52 +39,34 @@ class CreateViewModel @Inject constructor(
     val selectedPriority: State<Priority?> = _selectedPriority
     val selectedPeriod: State<Period?> = _selectedPeriod
 
-    fun createRoutine() {
+    fun createRoutine(onSuccess: () -> Unit, onError: (Throwable) -> Unit) {
         viewModelScope.launch {
-            val routine = Routine(
-                id = UUID.randomUUID(),
-                name = if (routineName.value.isBlank()) throw MissingFieldException("nom") else routineName.value,
-                description = routineDescription.value,
-                category = selectedCategory.value ?: throw MissingFieldException("catégorie"),
-                startTime = selectedStartDate.value,
-                endTime = if (hasEndDate.value) selectedEndDate.value else null,
-                period = selectedPeriod.value,
-                priority = selectedPriority.value ?: throw MissingFieldException("importance")
-            )
+            try {
+                val routine = Routine(
+                    id = UUID.randomUUID(),
+                    name = if (_routineName.value.isBlank()) throw MissingFieldException("nom") else _routineName.value,
+                    description = _routineDescription.value,
+                    category = _selectedCategory.value ?: throw MissingFieldException("catégorie"),
+                    startTime = _selectedStartDate.value,
+                    endTime = if (_hasEndDate.value) _selectedEndDate.value else null,
+                    period = _selectedPeriod.value,
+                    priority = _selectedPriority.value ?: throw MissingFieldException("importance")
+                )
 
-            appRepository.addOrUpdateRoutine(routine)
+                appRepository.addOrUpdateRoutine(routine)
+                onSuccess()
+            } catch (e: Exception) {
+                onError(e)
+            }
         }
     }
 
-    fun setName(name: String) {
-        _routineName.value = name
-    }
-
-    fun setDescription(description: String) {
-        _routineDescription.value = description
-    }
-
-    fun setCategory(category: Category) {
-        _selectedCategory.value = category
-    }
-
-    fun setStartDate(date: LocalDateTime) {
-        _selectedStartDate.value = date
-    }
-
-    fun setHasEndDate(bool: Boolean) {
-        _hasEndDate.value = bool
-    }
-
-    fun setEndDate(date: LocalDateTime) {
-        _selectedEndDate.value = date
-    }
-
-    fun setPriority(priority: Priority) {
-        _selectedPriority.value = priority
-    }
-
-    fun setPeriod(period: Period?) {
-        _selectedPeriod.value = period
-    }
+    fun setName(name: String) = run { _routineName.value = name }
+    fun setDescription(desc: String) = run { _routineDescription.value = desc }
+    fun setCategory(cat: Category) = run { _selectedCategory.value = cat }
+    fun setStartDate(date: LocalDateTime) = run { _selectedStartDate.value = date }
+    fun setHasEndDate(enabled: Boolean) = run { _hasEndDate.value = enabled }
+    fun setEndDate(date: LocalDateTime) = run { _selectedEndDate.value = date }
+    fun setPriority(priority: Priority) = run { _selectedPriority.value = priority }
+    fun setPeriod(period: Period?) = run { _selectedPeriod.value = period }
 }
