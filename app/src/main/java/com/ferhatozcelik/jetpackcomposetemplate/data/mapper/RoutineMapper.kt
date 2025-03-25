@@ -14,7 +14,7 @@ import java.util.UUID
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun Routine.toEntity() = RoutineEntity(
-    id = id.toString(),
+    id = id,
     name = name,
     description = description,
     category = category.name,
@@ -26,7 +26,7 @@ fun Routine.toEntity() = RoutineEntity(
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun RoutineEntity.toModel() = Routine(
-    id = UUID.fromString(id),
+    id = id,
     name = name,
     description = description,
     category = Category.valueOf(category),

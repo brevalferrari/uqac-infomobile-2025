@@ -44,9 +44,9 @@ class EditViewModel @Inject constructor(
     val selectedPriority: State<Priority?> = _selectedPriority
     val selectedPeriod: State<Period?> = _selectedPeriod
 
-    fun loadRoutineById(id: String) {
+    fun loadRoutineById(id: UUID) {
         viewModelScope.launch {
-            val result = appRepository.getRoutineById(UUID.fromString(id))
+            val result = appRepository.getRoutineById(id)
             result?.let {
                 _routine.value = it
                 setName(it.name)

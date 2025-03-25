@@ -25,13 +25,14 @@ import com.ferhatozcelik.jetpackcomposetemplate.R
 import com.ferhatozcelik.jetpackcomposetemplate.navigation.Screen
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Black
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.White
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun EditScreen(
     navController: NavHostController,
-    routineId: String?,
+    routineId: UUID,
     viewModel: EditViewModel = hiltViewModel(),
     state: EditScreenState
 ) {
@@ -44,7 +45,7 @@ fun EditScreen(
 
     // Charger la routine depuis Room
     LaunchedEffect(routineId) {
-        routineId?.let { viewModel.loadRoutineById(it) }
+        viewModel.loadRoutineById(routineId)
     }
 
     viewModel.routine.value?.let { routine ->
@@ -223,8 +224,5 @@ fun EditScreen(
                 )
             }
         }
-    } ?: run {
-        Toast.makeText(context, "La routine demandée n'existe plus !", Toast.LENGTH_SHORT).show()
-        navController.navigate(Screen.Main.route)
     }
 }
