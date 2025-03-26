@@ -3,7 +3,9 @@ package com.ferhatozcelik.jetpackcomposetemplate.data.entity
 import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.ferhatozcelik.jetpackcomposetemplate.data.model.Zone
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 import java.util.UUID
 
 @Parcelize
@@ -17,5 +19,6 @@ data class RoutineEntity (
     val priority: String,
     val periodDays: Int?,
     val startTime: String,
-    val endTime: String?
+    val endTime: String?,
+    val zone: Zone?,
 ) : Parcelable

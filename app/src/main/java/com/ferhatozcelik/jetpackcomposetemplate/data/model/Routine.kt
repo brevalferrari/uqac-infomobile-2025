@@ -12,5 +12,6 @@ data class Routine(
     var startTime: LocalDateTime,
     var endTime: LocalDateTime? = null,
     var period: Period? = null, // when null, do it once
-    var priority: Priority
+    var priority: Priority,
+    var zone: Zone? = null,
 )

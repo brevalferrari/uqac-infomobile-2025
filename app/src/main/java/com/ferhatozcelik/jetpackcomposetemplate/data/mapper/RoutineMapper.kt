@@ -10,7 +10,6 @@ import com.ferhatozcelik.jetpackcomposetemplate.data.model.Priority
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
 import java.time.LocalDateTime
 import java.time.Period
-import java.util.UUID
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun Routine.toEntity() = RoutineEntity(
@@ -21,7 +20,8 @@ fun Routine.toEntity() = RoutineEntity(
     priority = priority.name,
     periodDays = period?.days,
     startTime = startTime.toString(),
-    endTime = endTime?.toString()
+    endTime = endTime?.toString(),
+    zone = null
 )
 
 @RequiresApi(Build.VERSION_CODES.O)
