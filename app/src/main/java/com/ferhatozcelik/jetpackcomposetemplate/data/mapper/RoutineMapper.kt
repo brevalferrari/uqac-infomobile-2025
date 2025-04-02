@@ -21,7 +21,7 @@ fun Routine.toEntity() = RoutineEntity(
     periodDays = period?.days,
     startTime = startTime.toString(),
     endTime = endTime?.toString(),
-    zone = null
+    zone = zone
 )
 
 @RequiresApi(Build.VERSION_CODES.O)
