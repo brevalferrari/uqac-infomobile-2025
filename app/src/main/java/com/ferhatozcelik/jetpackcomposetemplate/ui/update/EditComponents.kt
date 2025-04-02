@@ -6,9 +6,28 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DatePickerState
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.TimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -24,9 +43,9 @@ import androidx.compose.ui.window.Dialog
 import com.ferhatozcelik.jetpackcomposetemplate.R
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Category
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Priority
+import com.ferhatozcelik.jetpackcomposetemplate.data.model.Zone
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Black
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Grey
-import com.ferhatozcelik.jetpackcomposetemplate.util.DateUtils
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Period
@@ -97,7 +116,9 @@ fun RoutineCategoryDropdown(
                     text = selectedCategory?.toString() ?: "Sélectionnez une catégorie",
                     fontFamily = fontFamily,
                     color = if (selectedCategory == null) Grey else Black,
-                    modifier = Modifier.weight(1f).padding(8.dp)
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp)
                 )
                 Image(
                     painter = painterResource(id = R.drawable.arrowdown),
@@ -157,7 +178,9 @@ fun RoutinePriorityDropdown(
                     text = selected?.toString() ?: "Sélectionnez une importance",
                     fontFamily = fontFamily,
                     color = if (selected == null) Grey else Black,
-                    modifier = Modifier.weight(1f).padding(8.dp)
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp)
                 )
                 Image(
                     painter = painterResource(id = R.drawable.arrowdown),
@@ -224,7 +247,9 @@ fun RoutinePeriodDropdown(
                     },
                     fontFamily = fontFamily,
                     color = Black,
-                    modifier = Modifier.weight(1f).padding(8.dp)
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp)
                 )
                 Image(
                     painter = painterResource(id = R.drawable.arrowdown),
@@ -359,5 +384,47 @@ fun RoutineDateTimePicker(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun locationPopupTextField(
+    value: Zone?,
+    onClick: () -> Unit
+) {
+    TextButton(
+        onClick = onClick
+    ) {
+        TextField(
+            value = value.toString(),
+            onValueChange = {},
+            placeholder = { Text("Saisissez une ville et un rayon", color = Grey) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(1.dp, Grey, RoundedCornerShape(8.dp)),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                disabledContainerColor = Color.Transparent,
+                cursorColor = Black,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            )
+        )
+    }
+}
+
+@Composable
+fun locationPicker(
+    expanded: MutableState<Boolean>,
+    value: Zone,
+    onLocationValueChange: (Double, Double) -> Unit,
+    onRadiusValueChange: (Double) -> Unit,
+    onConfirm: () -> Unit,
+    onCancel: () -> Unit,
+    fontFamily: FontFamily
+) {
+    Dialog(onDismissRequest = onCancel) {
+        // TODO!
     }
 }

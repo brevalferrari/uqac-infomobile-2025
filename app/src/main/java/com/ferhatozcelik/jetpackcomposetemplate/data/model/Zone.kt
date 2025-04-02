@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Zone(
-    val latitude: Double,
-    val longitude: Double,
-    val radius: Double
+    var latitude: Double,
+    var longitude: Double,
+    var radius: Double
 ) : Parcelable

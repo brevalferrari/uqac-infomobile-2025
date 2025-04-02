@@ -2,17 +2,21 @@ package com.ferhatozcelik.jetpackcomposetemplate.ui.create
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.*
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ferhatozcelik.jetpackcomposetemplate.data.model.*
+import com.ferhatozcelik.jetpackcomposetemplate.data.model.Category
+import com.ferhatozcelik.jetpackcomposetemplate.data.model.Priority
+import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
+import com.ferhatozcelik.jetpackcomposetemplate.data.model.Zone
 import com.ferhatozcelik.jetpackcomposetemplate.data.repository.AppRepository
 import com.ferhatozcelik.jetpackcomposetemplate.util.MissingFieldException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
 import java.time.Period
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -29,6 +33,7 @@ class CreateViewModel @Inject constructor(
     private val _selectedEndDate = mutableStateOf(LocalDateTime.now())
     private val _selectedPriority = mutableStateOf<Priority?>(null)
     private val _selectedPeriod = mutableStateOf<Period?>(null)
+    private val _selectedZone = mutableStateOf<Zone?>(null)
 
     val routineName: State<String> = _routineName
     val routineDescription: State<String> = _routineDescription
@@ -38,6 +43,7 @@ class CreateViewModel @Inject constructor(
     val selectedEndDate: State<LocalDateTime> = _selectedEndDate
     val selectedPriority: State<Priority?> = _selectedPriority
     val selectedPeriod: State<Period?> = _selectedPeriod
+    val selectedZone: State<Zone?> = _selectedZone
 
     fun createRoutine(onSuccess: () -> Unit, onError: (Throwable) -> Unit) {
         viewModelScope.launch {
@@ -50,7 +56,8 @@ class CreateViewModel @Inject constructor(
                     startTime = _selectedStartDate.value,
                     endTime = if (_hasEndDate.value) _selectedEndDate.value else null,
                     period = _selectedPeriod.value,
-                    priority = _selectedPriority.value ?: throw MissingFieldException("importance")
+                    priority = _selectedPriority.value ?: throw MissingFieldException("importance"),
+                    zone = _selectedZone.value
                 )
 
                 appRepository.addOrUpdateRoutine(routine)
@@ -69,4 +76,8 @@ class CreateViewModel @Inject constructor(
     fun setEndDate(date: LocalDateTime) = run { _selectedEndDate.value = date }
     fun setPriority(priority: Priority) = run { _selectedPriority.value = priority }
     fun setPeriod(period: Period?) = run { _selectedPeriod.value = period }
+    fun setDefaultZone() = run { _selectedZone.value = Zone(48.418263, -71.053342, 1000.0) } // UQAC
+    fun setLatitude(lat: Double) = run { _selectedZone.value?.let { it.latitude = lat } }
+    fun setLongitude(lon: Double) = run { _selectedZone.value?.let { it.longitude = lon } }
+    fun setRadius(rad: Double) = run { _selectedZone.value?.let { it.radius = rad } }
 }

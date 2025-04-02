@@ -14,7 +14,7 @@ fun format(period: Period): String {
     val output = StringBuilder()
     if (y > 0) {
         output.append(
-            if (y > 1) "$y ans" else "ans"
+            if (y > 1) "$y ans" else "1 an"
         )
         if (m > 0) {
             if (d > 0) output.append(", ") else output.append(" et ")
@@ -22,13 +22,13 @@ fun format(period: Period): String {
     }
     if (m > 0) {
         output.append(
-            if (m > 1) "$m mois" else "mois"
+            if (m > 1) "$m mois" else "1 mois"
         )
         if (d > 0) output.append(" et ")
     }
     if (d > 0) {
         output.append(
-            if (d > 1) "$d jours" else "jours"
+            if (d > 1) "$d jours" else "1 jour"
         )
     }
     return output.toString()
