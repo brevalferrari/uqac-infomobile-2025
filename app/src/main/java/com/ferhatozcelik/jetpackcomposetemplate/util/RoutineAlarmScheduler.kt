@@ -3,7 +3,6 @@ package com.ferhatozcelik.jetpackcomposetemplate.util
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
@@ -15,8 +14,8 @@ class RoutineAlarmScheduler @Inject constructor(
     private val context: Context,
     private val alarmManager: AlarmManager
 ) {
-    private fun intent(id: Int): PendingIntent {
-        val intent = Intent(context, Notification::class.java)
+    private fun intent(id: Int, title: String, message: String): PendingIntent {
+        val intent = NotificationIntent(id, title, message).toIntent(context)
         return PendingIntent.getBroadcast(
             context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
@@ -43,12 +42,12 @@ class RoutineAlarmScheduler @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun schedule(routine: Routine) {
-        val intent = intent(routine.id.hashCode())
+        val intent = intent(routine.id.hashCode(), routine.name, routine.description)
         routine.period?.let { period -> scheduleRepeating(intent, routine.startTime, period) }
             ?: { scheduleOnce(intent, routine.startTime) }
     }
 
     fun cancel(routine: Routine) {
-        alarmManager.cancel(intent(routine.id.hashCode()))
+        alarmManager.cancel(intent(routine.id.hashCode(), routine.name, routine.description))
     }
 }
