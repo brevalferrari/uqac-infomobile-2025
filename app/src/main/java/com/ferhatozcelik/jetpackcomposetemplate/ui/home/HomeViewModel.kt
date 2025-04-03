@@ -32,7 +32,8 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _routines.value = routineManager.getRoutines()
             _routines.value.forEach {
-                routineAlarmScheduler.cancel(it)
+                // Android API docs seem to say that there can't be duplicates anyway
+                // routineAlarmScheduler.cancel(it)
                 routineAlarmScheduler.schedule(it)
             }
         }
