@@ -1,5 +1,8 @@
 package com.ferhatozcelik.jetpackcomposetemplate.di
 
+import android.app.AlarmManager
+import android.app.Application
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,6 +21,18 @@ object AppModule {
     @Singleton
     fun provideApplicationScope(): CoroutineScope {
         return CoroutineScope(SupervisorJob())
+    }
+
+    @Provides
+    @Singleton
+    fun provideAlarmManager(context: Context): AlarmManager {
+        return context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+    }
+
+    @Provides
+    @Singleton
+    fun provideContext(application: Application): Context {
+        return application.applicationContext
     }
 
 }
