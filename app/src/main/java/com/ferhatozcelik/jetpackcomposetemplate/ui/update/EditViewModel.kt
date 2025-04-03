@@ -11,7 +11,7 @@ import com.ferhatozcelik.jetpackcomposetemplate.data.model.Priority
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
 import com.ferhatozcelik.jetpackcomposetemplate.data.repository.AppRepository
 import com.ferhatozcelik.jetpackcomposetemplate.util.MissingFieldException
-import com.ferhatozcelik.jetpackcomposetemplate.util.RoutineAlarmScheduler
+import com.ferhatozcelik.jetpackcomposetemplate.util.notifications.RoutineAlarmScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime

@@ -8,8 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
-import com.ferhatozcelik.jetpackcomposetemplate.util.RoutineAlarmScheduler
 import com.ferhatozcelik.jetpackcomposetemplate.util.RoutineManager
+import com.ferhatozcelik.jetpackcomposetemplate.util.notifications.RoutineAlarmScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

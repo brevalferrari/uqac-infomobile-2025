@@ -12,7 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.navigation.compose.rememberNavController
 import com.ferhatozcelik.jetpackcomposetemplate.navigation.NavGraph
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.MyApplicationTheme
-import com.ferhatozcelik.jetpackcomposetemplate.util.Notification
+import com.ferhatozcelik.jetpackcomposetemplate.util.notifications.Notification
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

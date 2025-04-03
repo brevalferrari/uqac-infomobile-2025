@@ -3,7 +3,7 @@ package com.ferhatozcelik.jetpackcomposetemplate.di
 import android.app.AlarmManager
 import android.app.Application
 import android.content.Context
-import com.ferhatozcelik.jetpackcomposetemplate.util.RoutineAlarmScheduler
+import com.ferhatozcelik.jetpackcomposetemplate.util.notifications.RoutineAlarmScheduler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
