@@ -2,7 +2,8 @@ package com.ferhatozcelik.jetpackcomposetemplate.ui.update
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.*
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Category
@@ -10,6 +11,7 @@ import com.ferhatozcelik.jetpackcomposetemplate.data.model.Priority
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
 import com.ferhatozcelik.jetpackcomposetemplate.data.repository.AppRepository
 import com.ferhatozcelik.jetpackcomposetemplate.util.MissingFieldException
+import com.ferhatozcelik.jetpackcomposetemplate.util.RoutineAlarmScheduler
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -20,7 +22,8 @@ import javax.inject.Inject
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class EditViewModel @Inject constructor(
-    private val appRepository: AppRepository
+    private val appRepository: AppRepository,
+    private val routineAlarmScheduler: RoutineAlarmScheduler
 ) : ViewModel() {
 
     private val _routine = mutableStateOf<Routine?>(null)
@@ -73,6 +76,8 @@ class EditViewModel @Inject constructor(
                 priority = selectedPriority.value ?: throw MissingFieldException("importance")
             )
             appRepository.addOrUpdateRoutine(updated)
+            routineAlarmScheduler.cancel(original)
+            // no need to schedule updated, it will be scheduled when on main screen again
         }
     }
 

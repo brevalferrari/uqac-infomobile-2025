@@ -6,10 +6,12 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Build.VERSION_CODES.TIRAMISU
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.ferhatozcelik.jetpackcomposetemplate.R
+import java.time.LocalDateTime
 
 class Notification : BroadcastReceiver() {
     companion object {
@@ -18,11 +20,19 @@ class Notification : BroadcastReceiver() {
         const val NOTIFICATION_ID_EXTRA_KEY = "idExtra"
         const val TITLE_EXTRA_KEY = "titleExtra"
         const val MESSAGE_EXTRA_KEY = "messageExtra"
+        const val DEAD_AT_KEY = "stopTimeExtra"
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(TIRAMISU)
     override fun onReceive(context: Context, intent: Intent) {
         NotificationIntent.fromIntent(intent)?.let { n ->
+            if (n.deadAt != null && n.deadAt.isBefore(LocalDateTime.now())) {
+                Log.i(
+                    "RIP",
+                    "routine \"${n.title}\" (\"${n.message}\") has reached end of life, ignoring notification request"
+                ) // TODO: make it stop (needs AlarmManager)
+                return
+            }
             val notification =
                 NotificationCompat.Builder(context, CHANNEL_ID).setSmallIcon(R.drawable.logo)
                     .setContentTitle(n.title)
@@ -43,6 +53,7 @@ class Notification : BroadcastReceiver() {
         manager: NotificationManager,
         notificationId: Int
     ) {
+        Log.d(null, "sending notification for routine hash $notificationId!")
         manager.notify(notificationId, notification)
     }
 }

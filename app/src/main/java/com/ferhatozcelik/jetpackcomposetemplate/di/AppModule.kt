@@ -3,6 +3,7 @@ package com.ferhatozcelik.jetpackcomposetemplate.di
 import android.app.AlarmManager
 import android.app.Application
 import android.content.Context
+import com.ferhatozcelik.jetpackcomposetemplate.util.RoutineAlarmScheduler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,6 +34,15 @@ object AppModule {
     @Singleton
     fun provideContext(application: Application): Context {
         return application.applicationContext
+    }
+
+    @Provides
+    @Singleton
+    fun provideRoutineAlarmScheduler(
+        context: Context,
+        alarmManager: AlarmManager
+    ): RoutineAlarmScheduler {
+        return RoutineAlarmScheduler(context, alarmManager)
     }
 
 }
