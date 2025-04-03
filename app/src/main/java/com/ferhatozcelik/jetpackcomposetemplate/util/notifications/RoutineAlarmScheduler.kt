@@ -9,7 +9,7 @@ import androidx.annotation.RequiresApi
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
 import java.time.LocalDateTime
 import java.time.Period
-import java.time.ZonedDateTime
+import java.time.ZoneId
 import javax.inject.Inject
 
 class RoutineAlarmScheduler @Inject constructor(
@@ -33,8 +33,7 @@ class RoutineAlarmScheduler @Inject constructor(
     private fun scheduleRepeating(intent: PendingIntent, start: LocalDateTime, period: Period) {
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
-            // localDateTimeToAlarmDumbUnit(start),
-            System.currentTimeMillis() + 500,
+            localDateTimeToAlarmDumbUnit(start),
             period.days * AlarmManager.INTERVAL_DAY + period.months * AlarmManager.INTERVAL_DAY * 31 + period.years * AlarmManager.INTERVAL_DAY * 365,
             intent
         )
@@ -42,17 +41,12 @@ class RoutineAlarmScheduler @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun localDateTimeToAlarmDumbUnit(time: LocalDateTime): Long {
-        return time.toInstant(ZonedDateTime.now().offset).toEpochMilli()
+        return time.atZone(ZoneId.systemDefault()).toEpochSecond() * 1000L
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun scheduleOnce(intent: PendingIntent, start: LocalDateTime) {
-        alarmManager.set(
-            AlarmManager.RTC_WAKEUP,
-            // localDateTimeToAlarmDumbUnit(start),
-            System.currentTimeMillis() + 500,
-            intent
-        )
+        alarmManager.set(AlarmManager.RTC_WAKEUP, localDateTimeToAlarmDumbUnit(start), intent)
     }
 
     private fun cancel(intent: PendingIntent) {
