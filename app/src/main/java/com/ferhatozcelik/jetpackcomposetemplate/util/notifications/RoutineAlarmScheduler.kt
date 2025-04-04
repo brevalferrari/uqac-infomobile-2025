@@ -82,10 +82,10 @@ class RoutineAlarmScheduler @Inject constructor(
             )
         if (routine.period != null) {
             Log.d(null, "scheduling a repeating alarm")
-            scheduleRepeating(intent, routine.startTime, routine.period!!)
+            scheduleRepeating(intent, routine.startTime.minusMinutes(1), routine.period!!)
         } else {
             Log.d(null, "scheduling a single alarm")
-            scheduleOnce(intent, routine.startTime)
+            scheduleOnce(intent, routine.startTime.minusMinutes(1))
         }
         Log.d(null, "done scheduling.")
     }
