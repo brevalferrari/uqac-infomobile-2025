@@ -52,7 +52,8 @@ class Notification : BroadcastReceiver() {
         manager: NotificationManager,
         notificationId: Int
     ) {
-        Log.d(null, "sending notification for routine hash $notificationId!")
+        Log.d(null, "sending notification for routine hash $notificationId")
         manager.notify(notificationId, notification)
+        Log.d(null, "notification sent for routine hash $notificationId.")
     }
 }
