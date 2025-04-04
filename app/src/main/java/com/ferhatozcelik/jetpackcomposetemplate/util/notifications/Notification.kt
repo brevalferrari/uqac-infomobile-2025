@@ -25,7 +25,7 @@ class Notification : BroadcastReceiver() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onReceive(context: Context, intent: Intent) {
         NotificationIntent.Companion.fromIntent(intent)?.let { n ->
-            if (n.deadAt != null && n.deadAt.isBefore(LocalDateTime.now())) {
+            if (n.deadAt.isBefore(LocalDateTime.now())) {
                 Log.i(
                     "RIP",
                     "routine \"${n.title}\" (\"${n.message}\") has reached end of life, ignoring notification request"

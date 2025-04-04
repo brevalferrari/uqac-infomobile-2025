@@ -78,7 +78,7 @@ class RoutineAlarmScheduler @Inject constructor(
                 routine.id.hashCode(),
                 routine.name,
                 routine.description,
-                routine.endTime ?: routine.startTime.plusSeconds(1)
+                routine.endTime ?: routine.startTime.plusSeconds(60)
             )
         if (routine.period != null) {
             Log.d(null, "scheduling a repeating alarm")
@@ -101,7 +101,7 @@ class RoutineAlarmScheduler @Inject constructor(
                 routine.id.hashCode(),
                 routine.name,
                 routine.description,
-                routine.endTime ?: routine.startTime.plusSeconds(1)
+                routine.endTime ?: routine.startTime.plusSeconds(60)
             )
         )
     }
