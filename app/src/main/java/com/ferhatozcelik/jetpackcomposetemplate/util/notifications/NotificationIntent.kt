@@ -10,7 +10,7 @@ class NotificationIntent(
     val id: Int?,
     val title: String,
     val message: String,
-    val deadAt: LocalDateTime?
+    val deadAt: LocalDateTime
 ) {
     companion object {
         @RequiresApi(Build.VERSION_CODES.TIRAMISU)
@@ -18,12 +18,14 @@ class NotificationIntent(
             val id = intent.getIntExtra(Notification.NOTIFICATION_ID_EXTRA_KEY, -666)
             return intent.getStringExtra(Notification.TITLE_EXTRA_KEY)?.let { title ->
                 intent.getStringExtra(Notification.MESSAGE_EXTRA_KEY)?.let { message ->
-                    NotificationIntent(
-                        if (id == -666) null else id, title, message, intent.getSerializableExtra(
-                            Notification.DEAD_AT_KEY,
-                            LocalDateTime::class.java
+                    intent.getSerializableExtra(
+                        Notification.DEAD_AT_KEY,
+                        LocalDateTime::class.java
+                    )?.let { deadAt ->
+                        NotificationIntent(
+                            if (id == -666) null else id, title, message, deadAt
                         )
-                    )
+                    }
                 }
             }
 

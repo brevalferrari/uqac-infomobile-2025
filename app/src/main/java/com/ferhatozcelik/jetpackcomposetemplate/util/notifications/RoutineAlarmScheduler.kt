@@ -7,6 +7,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
+import java.math.RoundingMode
 import java.time.LocalDateTime
 import java.time.Period
 import java.time.ZoneId
@@ -21,19 +22,32 @@ class RoutineAlarmScheduler @Inject constructor(
         id: Int,
         title: String,
         message: String,
-        deadAt: LocalDateTime?
+        deadAt: LocalDateTime
     ): PendingIntent {
         val intent = NotificationIntent(id, title, message, deadAt).toIntent(context)
         return PendingIntent.getBroadcast(
-            context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            context, id, intent, PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun scheduleRepeating(intent: PendingIntent, start: LocalDateTime, period: Period) {
+        var triggerAtMillis = localDateTimeToAlarmDumbUnit(start)
+        if (start.isBefore(LocalDateTime.now())) {
+            Log.d(null, "routine start is before now, delaying notification till next period ends")
+            val n: Double = (
+                    localDateTimeToAlarmDumbUnit(LocalDateTime.now()).toDouble() -
+                            localDateTimeToAlarmDumbUnit(start).toDouble()) /
+                    (period.days * 60000 * 60 * 24 + period.months * 60000 * 60 * 24 * 30 + period.years * 60000 * 60 * 24 * 365)
+            triggerAtMillis =
+                localDateTimeToAlarmDumbUnit(LocalDateTime.now()) + (n.toBigDecimal().setScale(
+                    0,
+                    RoundingMode.UP
+                ).toDouble() - n).toLong()
+        }
         alarmManager.setRepeating(
             AlarmManager.RTC_WAKEUP,
-            localDateTimeToAlarmDumbUnit(start),
+            triggerAtMillis,
             period.days * AlarmManager.INTERVAL_DAY + period.months * AlarmManager.INTERVAL_DAY * 31 + period.years * AlarmManager.INTERVAL_DAY * 365,
             intent
         )
@@ -60,7 +74,12 @@ class RoutineAlarmScheduler @Inject constructor(
             "received schedule request for routine \"${routine.name}\" (\"${routine.description}\")"
         )
         val intent =
-            intent(routine.id.hashCode(), routine.name, routine.description, routine.endTime)
+            intent(
+                routine.id.hashCode(),
+                routine.name,
+                routine.description,
+                routine.endTime ?: routine.startTime.plusSeconds(1)
+            )
         if (routine.period != null) {
             Log.d(null, "scheduling a repeating alarm")
             scheduleRepeating(intent, routine.startTime, routine.period!!)
@@ -82,7 +101,7 @@ class RoutineAlarmScheduler @Inject constructor(
                 routine.id.hashCode(),
                 routine.name,
                 routine.description,
-                routine.endTime
+                routine.endTime ?: routine.startTime.plusSeconds(1)
             )
         )
     }
