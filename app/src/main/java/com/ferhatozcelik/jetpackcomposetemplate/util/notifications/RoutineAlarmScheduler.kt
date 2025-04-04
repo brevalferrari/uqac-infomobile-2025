@@ -61,14 +61,14 @@ class RoutineAlarmScheduler @Inject constructor(
         )
         val intent =
             intent(routine.id.hashCode(), routine.name, routine.description, routine.endTime)
-        routine.period?.let { period ->
+        if (routine.period != null) {
             Log.d(null, "scheduling a repeating alarm")
-            scheduleRepeating(intent, routine.startTime, period)
+            scheduleRepeating(intent, routine.startTime, routine.period!!)
+        } else {
+            Log.d(null, "scheduling a single alarm")
+            scheduleOnce(intent, routine.startTime)
         }
-            ?: {
-                Log.d(null, "scheduling a single alarm")
-                scheduleOnce(intent, routine.startTime)
-            }
+        Log.d(null, "done scheduling.")
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
