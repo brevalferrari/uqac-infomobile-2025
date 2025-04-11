@@ -40,13 +40,10 @@ fun format(datetime: LocalDateTime): String {
 
     val output = StringBuilder()
     output.append("${time.hour}h")
-    if (time.minute != 0) {
-        if (time.minute < 10) output.append("0")
-        output.append(time.minute)
-    }
-    if (LocalDateTime.now()
-            .minusDays(1) >= datetime
-    ) {
+    if (time.minute < 10) output.append("0")
+    output.append(time.minute)
+    val now = LocalDateTime.now()
+    if ((now.dayOfYear != datetime.dayOfYear) or (now.year != datetime.year)) {
         output.append(" (${datetime.dayOfMonth}/${datetime.month.value}")
         if (datetime.year != LocalDateTime.now().year) {
             val décennie: Int = datetime.year / 100
