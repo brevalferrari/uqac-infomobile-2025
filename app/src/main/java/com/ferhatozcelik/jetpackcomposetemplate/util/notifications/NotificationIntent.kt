@@ -32,7 +32,6 @@ class NotificationIntent(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun toIntent(context: Context): Intent {
         return Intent(
             context,

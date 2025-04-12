@@ -1,11 +1,8 @@
 package com.ferhatozcelik.jetpackcomposetemplate.util
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.time.LocalDateTime
 import java.time.Period
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun format(period: Period): String {
     val y = period.years
     val m = period.months
@@ -34,7 +31,6 @@ fun format(period: Period): String {
     return output.toString()
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun format(datetime: LocalDateTime): String {
     val time = datetime.toLocalTime()
 

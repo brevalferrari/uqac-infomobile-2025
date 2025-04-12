@@ -1,7 +1,5 @@
 package com.ferhatozcelik.jetpackcomposetemplate.ui.update
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -208,7 +206,6 @@ fun RoutinePriorityDropdown(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RoutinePeriodDropdown(
     selected: Period?,
@@ -289,7 +286,6 @@ fun RoutinePeriodDropdown(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RoutineDateTimePicker(
     label: String,

@@ -1,16 +1,25 @@
 package com.ferhatozcelik.jetpackcomposetemplate.ui.create
 
-import android.os.Build
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -25,11 +34,13 @@ import com.ferhatozcelik.jetpackcomposetemplate.R
 import com.ferhatozcelik.jetpackcomposetemplate.navigation.Screen
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Black
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.White
-import com.ferhatozcelik.jetpackcomposetemplate.ui.update.*
-import java.time.format.DateTimeFormatter
+import com.ferhatozcelik.jetpackcomposetemplate.ui.update.RoutineCategoryDropdown
+import com.ferhatozcelik.jetpackcomposetemplate.ui.update.RoutineDateTimePicker
+import com.ferhatozcelik.jetpackcomposetemplate.ui.update.RoutinePeriodDropdown
+import com.ferhatozcelik.jetpackcomposetemplate.ui.update.RoutinePriorityDropdown
+import com.ferhatozcelik.jetpackcomposetemplate.ui.update.RoutineTextField
 
 @OptIn(ExperimentalMaterial3Api::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CreateScreen(
     viewModel: CreateViewModel = hiltViewModel(),
@@ -43,9 +54,13 @@ fun CreateScreen(
         Font(R.font.robotoserif_italic, style = FontStyle.Italic),
     )
 
-    Box(modifier = Modifier.fillMaxSize().padding(10.dp)) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .padding(10.dp)) {
         LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(10.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(10.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.Start
         ) {
@@ -67,7 +82,10 @@ fun CreateScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                RoutineTextField("Description de la routine *", viewModel.routineDescription.value) {
+                RoutineTextField(
+                    "Description de la routine *",
+                    viewModel.routineDescription.value
+                ) {
                     viewModel.setDescription(it)
                 }
 
@@ -93,12 +111,14 @@ fun CreateScreen(
                     timePickerState = state.timePickerState,
                     onDateSelected = {
                         viewModel.setStartDate(
-                            viewModel.selectedStartDate.value.withDayOfMonth(it.dayOfMonth).withMonth(it.monthValue).withYear(it.year)
+                            viewModel.selectedStartDate.value.withDayOfMonth(it.dayOfMonth)
+                                .withMonth(it.monthValue).withYear(it.year)
                         )
                     },
                     onTimeSelected = {
                         viewModel.setStartDate(
-                            viewModel.selectedStartDate.value.withHour(it.hour).withMinute(it.minute)
+                            viewModel.selectedStartDate.value.withHour(it.hour)
+                                .withMinute(it.minute)
                         )
                     },
                     fontFamily = robotoSerifFontFamily
@@ -128,12 +148,14 @@ fun CreateScreen(
                         timePickerState = state.timePickerState,
                         onDateSelected = {
                             viewModel.setEndDate(
-                                viewModel.selectedEndDate.value.withDayOfMonth(it.dayOfMonth).withMonth(it.monthValue).withYear(it.year)
+                                viewModel.selectedEndDate.value.withDayOfMonth(it.dayOfMonth)
+                                    .withMonth(it.monthValue).withYear(it.year)
                             )
                         },
                         onTimeSelected = {
                             viewModel.setEndDate(
-                                viewModel.selectedEndDate.value.withHour(it.hour).withMinute(it.minute)
+                                viewModel.selectedEndDate.value.withHour(it.hour)
+                                    .withMinute(it.minute)
                             )
                         },
                         fontFamily = robotoSerifFontFamily
@@ -164,10 +186,14 @@ fun CreateScreen(
                     onClick = {
                         viewModel.createRoutine(
                             onSuccess = { navController.navigate(Screen.Main.route) },
-                            onError = { e -> Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show() }
+                            onError = { e ->
+                                Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                            }
                         )
                     },
-                    modifier = Modifier.fillMaxWidth().padding(16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
                     colors = ButtonDefaults.buttonColors(containerColor = Black)
                 ) {
                     Text(
@@ -182,7 +208,9 @@ fun CreateScreen(
 
         Button(
             onClick = { navController.navigate(Screen.Main.route) },
-            modifier = Modifier.align(Alignment.TopStart).size(56.dp),
+            modifier = Modifier
+                .align(Alignment.TopStart)
+                .size(56.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Black)
         ) {
             Image(

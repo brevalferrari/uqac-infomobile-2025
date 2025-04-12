@@ -2,8 +2,6 @@
 
 package com.ferhatozcelik.jetpackcomposetemplate.data.mapper
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.ferhatozcelik.jetpackcomposetemplate.data.entity.RoutineEntity
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Category
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Priority
@@ -11,7 +9,6 @@ import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
 import java.time.LocalDateTime
 import java.time.Period
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun Routine.toEntity() = RoutineEntity(
     id = id,
     name = name,
@@ -24,7 +21,6 @@ fun Routine.toEntity() = RoutineEntity(
     zone = zone
 )
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun RoutineEntity.toModel() = Routine(
     id = id,
     name = name,

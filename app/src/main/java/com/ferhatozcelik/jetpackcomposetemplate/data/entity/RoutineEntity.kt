@@ -5,12 +5,11 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.ferhatozcelik.jetpackcomposetemplate.data.model.Zone
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 import java.util.UUID
 
 @Parcelize
 @Entity(tableName = "routine_table")
-data class RoutineEntity (
+data class RoutineEntity(
     @PrimaryKey(autoGenerate = false) // UUID déjà unique, pas besoin d'auto-génération
     val id: UUID,
     val name: String,

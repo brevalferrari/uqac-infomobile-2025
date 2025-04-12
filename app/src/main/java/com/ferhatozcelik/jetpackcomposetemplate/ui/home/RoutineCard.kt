@@ -1,7 +1,5 @@
 package com.ferhatozcelik.jetpackcomposetemplate.ui.home
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +29,6 @@ import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Black
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Grey
 import com.ferhatozcelik.jetpackcomposetemplate.util.format
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun RoutineCard(
     routine: Routine, navController: NavController, viewModel: HomeViewModel
@@ -66,7 +63,8 @@ fun RoutineCard(
 
                 Row {
 
-                    Image(painter = painterResource(id = com.ferhatozcelik.jetpackcomposetemplate.R.drawable.edit),
+                    Image(
+                        painter = painterResource(id = com.ferhatozcelik.jetpackcomposetemplate.R.drawable.edit),
                         contentDescription = "Edit",
                         modifier = Modifier
                             .size(24.dp)

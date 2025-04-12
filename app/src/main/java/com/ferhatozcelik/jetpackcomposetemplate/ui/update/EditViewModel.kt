@@ -1,7 +1,5 @@
 package com.ferhatozcelik.jetpackcomposetemplate.ui.update
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -19,7 +17,6 @@ import java.time.Period
 import java.util.UUID
 import javax.inject.Inject
 
-@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class EditViewModel @Inject constructor(
     private val appRepository: AppRepository,

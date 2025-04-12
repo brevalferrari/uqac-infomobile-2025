@@ -46,7 +46,6 @@ class Notification : BroadcastReceiver() {
         } ?: Log.e(null, "received invalid notification intent!")
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
     private fun sendNotification(
         notification: Notification,
         manager: NotificationManager,
