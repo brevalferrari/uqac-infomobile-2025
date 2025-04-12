@@ -25,7 +25,7 @@ fun format(period: Period): String {
             if (m > 1) "$m mois" else "1 mois"
         )
         if (d > 0) output.append(" et ")
-    }
+    } else if (d > 0) output.append(" et ")
     if (d > 0) {
         output.append(
             if (d > 1) "$d jours" else "1 jour"
