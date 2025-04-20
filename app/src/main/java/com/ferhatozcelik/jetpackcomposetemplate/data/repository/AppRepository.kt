@@ -15,22 +15,18 @@ class AppRepository @Inject constructor(
     private val routineDao: RoutineDao
 ) {
 
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getRoutines(): List<Routine> {
         return routineDao.getAll().map { it.toModel() }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getRoutineById(id: UUID): Routine? {
         return routineDao.getRoutineById(id)?.toModel()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun addOrUpdateRoutine(routine: Routine) {
         routineDao.insertRoutine(routine.toEntity())
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun deleteRoutine(routine: Routine) {
         routineDao.deleteRoutine(routine.toEntity())
     }

@@ -17,7 +17,6 @@ class RoutineAlarmScheduler @Inject constructor(
     private val context: Context,
     private val alarmManager: AlarmManager
 ) {
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun intent(
         id: Int,
         title: String,
@@ -30,7 +29,6 @@ class RoutineAlarmScheduler @Inject constructor(
         )
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun scheduleRepeating(intent: PendingIntent, start: LocalDateTime, period: Period) {
         var triggerAtMillis = localDateTimeToAlarmDumbUnit(start)
         if (start.isBefore(LocalDateTime.now())) {
@@ -53,12 +51,10 @@ class RoutineAlarmScheduler @Inject constructor(
         )
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun localDateTimeToAlarmDumbUnit(time: LocalDateTime): Long {
         return time.atZone(ZoneId.systemDefault()).toEpochSecond() * 1000L
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun scheduleOnce(intent: PendingIntent, start: LocalDateTime) {
         alarmManager.set(AlarmManager.RTC_WAKEUP, localDateTimeToAlarmDumbUnit(start), intent)
     }
@@ -67,7 +63,6 @@ class RoutineAlarmScheduler @Inject constructor(
         alarmManager.cancel(intent)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun schedule(routine: Routine) {
         Log.d(
             null,
@@ -90,7 +85,6 @@ class RoutineAlarmScheduler @Inject constructor(
         Log.d(null, "done scheduling.")
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun cancel(routine: Routine) {
         Log.d(
             null,
