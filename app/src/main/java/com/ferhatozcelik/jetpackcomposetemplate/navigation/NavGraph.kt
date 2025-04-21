@@ -16,10 +16,11 @@ import com.ferhatozcelik.jetpackcomposetemplate.ui.update.EditScreen
 import com.ferhatozcelik.jetpackcomposetemplate.ui.update.EditScreenState
 import java.util.Calendar
 import java.util.UUID
+import android.content.Context
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NavGraph(navController: NavHostController) {
+fun NavGraph(navController: NavHostController, activityContext: Context) {
 
     NavHost(
         navController = navController, startDestination = Screen.Main.route
@@ -28,7 +29,8 @@ fun NavGraph(navController: NavHostController) {
             val viewModel: HomeViewModel = hiltViewModel()
             MainScreen(
                 navController = navController,
-                viewModel = viewModel
+                viewModel = viewModel,
+                activityContext = activityContext
             )
         }
 

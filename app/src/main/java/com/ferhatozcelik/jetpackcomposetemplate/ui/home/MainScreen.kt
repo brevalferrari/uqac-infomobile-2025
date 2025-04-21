@@ -2,6 +2,7 @@ package com.ferhatozcelik.jetpackcomposetemplate.ui.home
 
 import android.util.Log
 import android.content.Intent
+import android.content.Context
 import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -43,7 +44,7 @@ import java.io.FileWriter
 
 @Composable
 fun MainScreen(
-    navController: NavController, viewModel: HomeViewModel
+    navController: NavController, viewModel: HomeViewModel, activityContext: Context
 ) {
     val robotoSerifFontFamily = FontFamily(
         Font(com.ferhatozcelik.jetpackcomposetemplate.R.font.roboto),
@@ -128,7 +129,13 @@ fun MainScreen(
             Button(
                 onClick = {
                 	Log.i(null, "export demandé")
-                	viewModel.exportClicked()
+                	try {
+                        activityContext.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setDataAndType(Uri.parse("file://" + viewModel.db.openHelper.writableDatabase.path), "*/*"), "Share using..."))
+                        Toast.makeText(viewModel.context, "Base exportée.", Toast.LENGTH_SHORT).show()
+                    } catch(e: Exception) {
+                        Log.e(null, e.toString())
+                        Toast.makeText(viewModel.context, "Une erreur est survenue, échec de l'export.", Toast.LENGTH_SHORT).show()
+                    }
                 }, modifier = Modifier
                     .size(56.dp), // Taille du bouton
                 colors = ButtonDefaults.buttonColors(containerColor = Black)

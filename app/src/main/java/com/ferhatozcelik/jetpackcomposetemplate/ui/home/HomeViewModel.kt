@@ -19,6 +19,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val routineManager: RoutineManager,
     private val routineAlarmScheduler: RoutineAlarmScheduler,
+    val context: Context,
+    val db: AppDatabase
 ) : ViewModel() {
 
 	val uiImportExportLiveData = SingleLiveData<Pair<AppDatabase, Int>>()
@@ -49,10 +51,10 @@ class HomeViewModel @Inject constructor(
     }
 
     fun importClicked() {
-    	uiImportExportLiveData.value = database to 1
+    	uiImportExportLiveData.value = db to 1
     }
 
     fun exportClicked() {
-    	uiImportExportLiveData.value = database to 2
+    	uiImportExportLiveData.value = db to 2
     }
 }
