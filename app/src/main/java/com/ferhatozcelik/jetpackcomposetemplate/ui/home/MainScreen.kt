@@ -127,13 +127,7 @@ fun MainScreen(
             // Bouton exporter
             Button(
                 onClick = {
-                    try {
-                        viewModel.context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setDataAndType(Uri.parse(viewModel.db.openHelper.writableDatabase.path), "*/*").apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }, "Share using"))
-                        Toast.makeText(viewModel.context, "Base exportée dans vos Documents.", Toast.LENGTH_SHORT).show()
-                    } catch(e: Exception) {
-                        Log.e(null, e.toString())
-                        Toast.makeText(viewModel.context, "Une erreur est survenue, échec de l'export.", Toast.LENGTH_SHORT).show()
-                    }
+                	Log.i(null, "export demandé")
                 }, modifier = Modifier
                     .size(56.dp), // Taille du bouton
                 colors = ButtonDefaults.buttonColors(containerColor = Black)
@@ -147,7 +141,7 @@ fun MainScreen(
             // Bouton importer
             Button(
                 onClick = {
-                    // TODO
+                	Log.i(null, "import demandé")
                 }, modifier = Modifier
                     .size(56.dp), // Taille du bouton
                 colors = ButtonDefaults.buttonColors(containerColor = Black)

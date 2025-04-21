@@ -18,8 +18,6 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val routineManager: RoutineManager,
     private val routineAlarmScheduler: RoutineAlarmScheduler,
-    val context: Context,
-    val db: AppDatabase
 ) : ViewModel() {
 
     private val _routines: MutableState<List<Routine>> = mutableStateOf(emptyList())
