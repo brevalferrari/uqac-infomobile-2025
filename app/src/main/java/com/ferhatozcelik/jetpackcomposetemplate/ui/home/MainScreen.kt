@@ -1,9 +1,14 @@
 package com.ferhatozcelik.jetpackcomposetemplate.ui.home
 
+import android.util.Log
+import android.content.Intent
+import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,6 +38,8 @@ import com.ferhatozcelik.jetpackcomposetemplate.navigation.Screen
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Black
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.Grey
 import com.ferhatozcelik.jetpackcomposetemplate.ui.theme.White
+import java.io.File
+import java.io.FileWriter
 
 @Composable
 fun MainScreen(
@@ -102,21 +109,55 @@ fun MainScreen(
             }
         }
 
-        // Bouton en bas à droite
-        Button(
-            onClick = {
-                navController.navigate(Screen.Create.route)
-            }, modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .size(56.dp), // Taille du bouton
-            colors = ButtonDefaults.buttonColors(containerColor = Black)
-        ) {
-            Text(
-                text = "+", color = White, // Couleur du texte
-                fontSize = 25.sp, textAlign = TextAlign.Center
-            )
-        }
+        Row(modifier = Modifier.align(Alignment.BottomEnd)) {
+            // Bouton +
+            Button(
+                onClick = {
+                    navController.navigate(Screen.Create.route)
+                }, modifier = Modifier
+                    .size(56.dp), // Taille du bouton
+                colors = ButtonDefaults.buttonColors(containerColor = Black)
+            ) {
+                Text(
+                    text = "+", color = White, // Couleur du texte
+                    fontSize = 25.sp, textAlign = TextAlign.Center
+                )
+            }
 
+            // Bouton exporter
+            Button(
+                onClick = {
+                    try {
+                        viewModel.context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setDataAndType(Uri.parse(viewModel.db.openHelper.writableDatabase.path), "*/*").apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }, "Share using"))
+                        Toast.makeText(viewModel.context, "Base exportée dans vos Documents.", Toast.LENGTH_SHORT).show()
+                    } catch(e: Exception) {
+                        Log.e(null, e.toString())
+                        Toast.makeText(viewModel.context, "Une erreur est survenue, échec de l'export.", Toast.LENGTH_SHORT).show()
+                    }
+                }, modifier = Modifier
+                    .size(56.dp), // Taille du bouton
+                colors = ButtonDefaults.buttonColors(containerColor = Black)
+            ) {
+                Text(
+                    text = "⮉", color = White, // Couleur du texte
+                    fontSize = 25.sp, textAlign = TextAlign.Center
+                )
+            }
+
+            // Bouton importer
+            Button(
+                onClick = {
+                    // TODO
+                }, modifier = Modifier
+                    .size(56.dp), // Taille du bouton
+                colors = ButtonDefaults.buttonColors(containerColor = Black)
+            ) {
+                Text(
+                    text = "⮋", color = White, // Couleur du texte
+                    fontSize = 25.sp, textAlign = TextAlign.Center
+                )
+            }
+        }
     }
 
 }
