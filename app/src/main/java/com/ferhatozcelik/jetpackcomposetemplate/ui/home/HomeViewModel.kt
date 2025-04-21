@@ -10,6 +10,7 @@ import com.ferhatozcelik.jetpackcomposetemplate.data.model.Routine
 import com.ferhatozcelik.jetpackcomposetemplate.data.local.AppDatabase
 import com.ferhatozcelik.jetpackcomposetemplate.util.RoutineManager
 import com.ferhatozcelik.jetpackcomposetemplate.util.notifications.RoutineAlarmScheduler
+import com.ferhatozcelik.jetpackcomposetemplate.util.SingleLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,6 +21,7 @@ class HomeViewModel @Inject constructor(
     private val routineAlarmScheduler: RoutineAlarmScheduler,
 ) : ViewModel() {
 
+	val uiImportExportLiveData = SingleLiveData<Pair<AppDatabase, Int>>()
     private val _routines: MutableState<List<Routine>> = mutableStateOf(emptyList())
     val routines: State<List<Routine>> = _routines
 
@@ -44,5 +46,13 @@ class HomeViewModel @Inject constructor(
             routineAlarmScheduler.cancel(routine)
             _routines.value = _routines.value.filter { it.id != routine.id }
         }
+    }
+
+    fun importClicked() {
+    	uiImportExportLiveData.value = database to 1
+    }
+
+    fun exportClicked() {
+    	uiImportExportLiveData.value = database to 2
     }
 }

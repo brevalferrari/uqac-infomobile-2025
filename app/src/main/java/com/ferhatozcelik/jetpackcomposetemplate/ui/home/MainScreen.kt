@@ -128,6 +128,7 @@ fun MainScreen(
             Button(
                 onClick = {
                 	Log.i(null, "export demandé")
+                	viewModel.exportClicked()
                 }, modifier = Modifier
                     .size(56.dp), // Taille du bouton
                 colors = ButtonDefaults.buttonColors(containerColor = Black)
@@ -142,6 +143,7 @@ fun MainScreen(
             Button(
                 onClick = {
                 	Log.i(null, "import demandé")
+                	viewModel.importClicked()
                 }, modifier = Modifier
                     .size(56.dp), // Taille du bouton
                 colors = ButtonDefaults.buttonColors(containerColor = Black)
